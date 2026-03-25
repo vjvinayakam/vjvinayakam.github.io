@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vijai Vinayakam — Web Tracking Specialist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --accent: #e8ff47;
+    --accent2: #47d4ff;
+    --accent3: #ff6b47;
+    --text: #f0ede8;
+    --muted: #888892;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 48px;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,255,71,0.08) 0%, transparent 70%);
+    top: 50%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,255,71,0.08);
+    border: 1px solid rgba(232,255,71,0.2);
+    border-radius: 2px;
+    padding: 6px 14px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    width: fit-content;
+    animation: fadeSlideUp 0.8s ease both;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(52px, 6vw, 86px);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+    animation: fadeSlideUp 0.8s 0.1s ease both;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-role {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+    animation: fadeSlideUp 0.8s 0.2s ease both;
+  }
+
+  .hero-desc {
+    font-size: 13px;
+    color: #aaa8b8;
+    max-width: 460px;
+    line-height: 1.9;
+    margin-bottom: 40px;
+    animation: fadeSlideUp 0.8s 0.3s ease both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    animation: fadeSlideUp 0.8s 0.4s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0a0a0f;
+    padding: 14px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232,255,71,0.3);
+  }
+
+  .btn-secondary {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 14px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    animation: fadeSlideUp 0.8s 0.5s ease both;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover { border-color: rgba(232,255,71,0.3); }
+
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .stat-card:hover::after { transform: scaleX(1); }
+
+  .stat-number {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .contact-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .contact-item .icon {
+    width: 28px; height: 28px;
+    background: rgba(232,255,71,0.08);
+    border: 1px solid rgba(232,255,71,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* SECTION COMMONS */
+  section {
+    padding: 100px 48px;
+    position: relative;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--accent);
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 4vw, 52px);
+    line-height: 1.1;
+    margin-bottom: 60px;
+  }
+
+  /* SKILLS SECTION */
+  .skills-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .skill-group {
+    background: var(--bg);
+    padding: 36px 32px;
+    border: 1px solid var(--border);
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-group:hover {
+    border-color: rgba(71,212,255,0.4);
+    transform: translateY(-4px);
+  }
+
+  .skill-group-icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  .skill-group-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 20px;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .skill-tag {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 5px 12px;
+    font-size: 11px;
+    color: #aaa;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .skill-tag:hover {
+    background: rgba(71,212,255,0.08);
+    border-color: rgba(71,212,255,0.3);
+    color: var(--accent2);
+  }
+
+  /* EXPERIENCE */
+  .experience-section { background: var(--bg); }
+
+  .exp-timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .exp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .exp-item {
+    position: relative;
+    margin-bottom: 64px;
+    animation: fadeSlideUp 0.6s ease both;
+  }
+
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -36px; top: 8px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(232,255,71,0.5);
+  }
+
+  .exp-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .exp-date {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    background: rgba(232,255,71,0.08);
+    border: 1px solid rgba(232,255,71,0.15);
+    padding: 3px 10px;
+  }
+
+  .exp-location {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .exp-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+
+  .exp-company {
+    font-size: 13px;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .exp-bullets li {
+    font-size: 13px;
+    color: #aaa8b8;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.8;
+  }
+
+  .exp-bullets li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 12px;
+  }
+
+  /* ACHIEVEMENTS */
+  .achievements-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .achieve-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .achieve-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+
+  .achieve-card:hover {
+    border-color: rgba(255,107,71,0.4);
+    transform: translateY(-4px);
+  }
+
+  .achieve-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -10px; right: 16px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 80px;
+    color: rgba(255,255,255,0.02);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .achieve-icon { font-size: 32px; margin-bottom: 16px; }
+
+  .achieve-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .achieve-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  /* EDUCATION */
+  .education-section { background: var(--bg); }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+
+  .edu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 36px;
+    position: relative;
+    transition: border-color 0.3s;
+  }
+
+  .edu-card:hover { border-color: rgba(232,255,71,0.3); }
+
+  .edu-degree {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .edu-school {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .edu-location {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* CONTACT SECTION */
+  .contact-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 100px 48px;
+  }
+
+  .contact-section .section-label { justify-content: center; }
+  .contact-section .section-label::before { display: none; }
+
+  .contact-email {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--accent);
+    margin: 24px 0 40px;
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .contact-email:hover { opacity: 0.7; }
+
+  .contact-info-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+
+  .contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .contact-info-item span { color: var(--text); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  footer strong { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: rgba(232,255,71,0.3); }
+
+  /* MARQUEE */
+  .marquee-strip {
+    background: var(--accent);
+    padding: 12px 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-inner {
+    display: inline-flex;
+    animation: marquee 30s linear infinite;
+    gap: 0;
+  }
+
+  .marquee-item {
+    font-family: 'Syne', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #0a0a0f;
+    padding: 0 32px;
+  }
+
+  .marquee-dot {
+    color: rgba(0,0,0,0.3);
+    padding: 0 4px;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+    .hero-right { margin-top: 40px; }
+    section { padding: 60px 24px; }
+    .skills-grid, .achieve-grid, .edu-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    footer { flex-direction: column; gap: 8px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">VV_</a>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-left">
+    <div class="hero-tag">Available for opportunities</div>
+    <h1 class="hero-name">Vijai<br><em>Vinayakam</em></h1>
+    <p class="hero-role">Web Tracking Specialist &amp; Marketing Data Analyst</p>
+    <p class="hero-desc">
+      3+ years building end-to-end GA4 &amp; GTM measurement frameworks that actually work.
+      I turn messy user behaviour data into clean BigQuery pipelines, dashboards, and decisions that move the needle.
+    </p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#contact" class="btn-secondary">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">3+</div>
+        <div class="stat-label">Years in Analytics</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">GA4</div>
+        <div class="stat-label">Deep Specialisation</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">BQ</div>
+        <div class="stat-label">BigQuery Expert</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">5+</div>
+        <div class="stat-label">Roles across 3 Countries</div>
+      </div>
+    </div>
+    <div class="contact-bar">
+      <div class="contact-item">
+        <div class="icon">✉</div>
+        vijay5310@gmail.com
+      </div>
+      <div class="contact-item">
+        <div class="icon">📱</div>
+        +91 9150257384
+      </div>
+      <div class="contact-item">
+        <div class="icon">📍</div>
+        Chennai, India
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">GA4</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Google Tag Manager</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">BigQuery</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">SQL</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Looker Studio</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Power BI</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Attribution</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">A/B Testing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Conversion Tracking</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Meta Ads</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Google Ads</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">DataLayer</span><span class="marquee-dot">◆</span>
+    <!-- duplicate for seamless loop -->
+    <span class="marquee-item">GA4</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Google Tag Manager</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">BigQuery</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">SQL</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Looker Studio</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Power BI</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Attribution</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">A/B Testing</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Conversion Tracking</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Meta Ads</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">Google Ads</span><span class="marquee-dot">◆</span>
+    <span class="marquee-item">DataLayer</span><span class="marquee-dot">◆</span>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-section reveal">
+  <div class="section-label">Core Expertise</div>
+  <h2 class="section-title">Skills &amp; Toolset</h2>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <div class="skill-group-icon">📡</div>
+      <div class="skill-group-title">Tracking &amp; Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-tag">GA4 Event Modeling</span>
+        <span class="skill-tag">Custom Dimensions</span>
+        <span class="skill-tag">Ecommerce Tracking</span>
+        <span class="skill-tag">GTM Tags &amp; Triggers</span>
+        <span class="skill-tag">dataLayer</span>
+        <span class="skill-tag">Consent Mode</span>
+        <span class="skill-tag">Funnel Analysis</span>
+        <span class="skill-tag">Cohort Retention</span>
+        <span class="skill-tag">QA &amp; Auditing</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-icon">🗄️</div>
+      <div class="skill-group-title">Data &amp; Reporting</div>
+      <div class="skill-tags">
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">BigQuery</span>
+        <span class="skill-tag">GA4 Export</span>
+        <span class="skill-tag">Event-level Queries</span>
+        <span class="skill-tag">Looker Studio</span>
+        <span class="skill-tag">Power BI</span>
+        <span class="skill-tag">Excel</span>
+        <span class="skill-tag">Google Sheets</span>
+      </div>
+    </div>
+    <div class="skill-group">
+      <div class="skill-group-icon">📈</div>
+      <div class="skill-group-title">Marketing Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Google Ads</span>
+        <span class="skill-tag">Meta Ads</span>
+        <span class="skill-tag">Conversion Tracking</span>
+        <span class="skill-tag">Attribution</span>
+        <span class="skill-tag">ROAS</span>
+        <span class="skill-tag">CPA</span>
+        <span class="skill-tag">CTR Analysis</span>
+        <span class="skill-tag">A/B Testing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="experience-section">
+  <div class="section-label">Career</div>
+  <h2 class="section-title">Work Experience</h2>
+
+  <div class="exp-timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Feb 2023 – Feb 2026</span>
+        <span class="exp-location">Remote · Hong Kong</span>
+      </div>
+      <h3 class="exp-title">Marketing Analyst</h3>
+      <div class="exp-company">Wati.io</div>
+      <ul class="exp-bullets">
+        <li>Designed and maintained end-to-end GA4 &amp; GTM tracking across page views, scrolls, CTAs, forms, signups, demos, and subscription funnels.</li>
+        <li>Authored detailed tracking specifications (events, parameters, dataLayer) and collaborated with developers to ensure accurate implementation and QA.</li>
+        <li>Built GA4 → BigQuery data models to analyze multi-session user journeys, funnels, and drop-offs, improving conversion insights for the product team.</li>
+        <li>Developed automated Looker Studio &amp; Power BI dashboards covering traffic, funnels, retention, LTV, and ROI for marketing and product stakeholders.</li>
+        <li>Integrated GA4, Google Ads, Meta Ads, and CRM data in BigQuery to support full-funnel attribution and performance analysis.</li>
+        <li>Ran A/B tests on landing pages and ad creatives, measuring uplift in CTR, conversion rate, and downstream engagement using SQL.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">May 2020 – Aug 2022</span>
+        <span class="exp-location">Paris, France</span>
+      </div>
+      <h3 class="exp-title">E-Commerce Business Owner</h3>
+      <div class="exp-company">FOGWIPE.FR</div>
+      <ul class="exp-bullets">
+        <li>Founded and scaled an e-commerce business to over 2,000 sales and €25,000 in gross revenue.</li>
+        <li>Developed and updated product content strategies to drive sales and improve product visibility.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Jun 2018 – Mar 2020</span>
+        <span class="exp-location">Paris, France</span>
+      </div>
+      <h3 class="exp-title">Paid Media Manager</h3>
+      <div class="exp-company">Socialyse @ Havas Media</div>
+      <ul class="exp-bullets">
+        <li>Launched and managed large-budget paid social campaigns including carousel ads, video ads, canvas formats, and more.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Sep 2016 – Mar 2017</span>
+        <span class="exp-location">Paris, France</span>
+      </div>
+      <h3 class="exp-title">Paid Media Intern</h3>
+      <div class="exp-company">Socialyse @ Havas Media</div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <span class="exp-date">Jan 2014 – Aug 2015</span>
+        <span class="exp-location">Chennai, India</span>
+      </div>
+      <h3 class="exp-title">Junior Marketing Manager</h3>
+      <div class="exp-company">Sys Universe</div>
+      <ul class="exp-bullets">
+        <li>Managed social media campaigns with a focus on Instagram and Facebook growth and engagement.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="achievements-section reveal">
+  <div class="section-label">Highlights</div>
+  <h2 class="section-title">Key Achievements</h2>
+  <div class="achieve-grid">
+    <div class="achieve-card" data-num="01">
+      <div class="achieve-icon">🎯</div>
+      <div class="achieve-title">End-to-End Tracking Architecture</div>
+      <div class="achieve-desc">Built and owned complete GA4 &amp; GTM measurement frameworks at Wati.io covering the full subscription funnel from first touch to conversion.</div>
+    </div>
+    <div class="achieve-card" data-num="02">
+      <div class="achieve-icon">⚡</div>
+      <div class="achieve-title">BigQuery Data Modelling</div>
+      <div class="achieve-desc">Designed event-level BigQuery pipelines integrating GA4, Google Ads, Meta Ads, and CRM data for unified full-funnel attribution.</div>
+    </div>
+    <div class="achieve-card" data-num="03">
+      <div class="achieve-icon">🛒</div>
+      <div class="achieve-title">€25K E-Commerce Revenue</div>
+      <div class="achieve-desc">Built FOGWIPE.FR from the ground up, scaling to 2,000+ sales and €25,000 gross revenue through product content and paid media strategies.</div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="education-section reveal">
+  <div class="section-label">Education</div>
+  <h2 class="section-title">Academic Background</h2>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-degree">MSc in Information Systems</div>
+      <div class="edu-school">ESIEE Paris</div>
+      <div class="edu-location">📍 Paris, France</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">B.E. in Computer Science</div>
+      <div class="edu-school">Anna University</div>
+      <div class="edu-location">📍 Chennai, India</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section reveal">
+  <div class="section-label">Let's Connect</div>
+  <h2 class="section-title">Get in Touch</h2>
+  <a href="mailto:vijay5310@gmail.com" class="contact-email">vijay5310@gmail.com</a>
+  <div class="contact-info-row">
+    <div class="contact-info-item">📱 <span>+91 9150257384</span></div>
+    <div class="contact-info-item">📍 <span>Chennai, India</span></div>
+    <div class="contact-info-item">🌐 <span>Open to Remote</span></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 <strong>Vijai Vinayakam</strong></span>
+  <span>Web Tracking Specialist · Marketing Data Analyst</span>
+</footer>
+
+<script>
+  // Intersection Observer for reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
