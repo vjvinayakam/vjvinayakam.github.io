@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analytics Lab — GTM & GA4 Practice Ground</title>
+
+  <!-- ══════════════════════════════════════════
+       🔧 REPLACE WITH YOUR GTM ID BELOW
+       ══════════════════════════════════════════ -->
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager — Replace GTM-XXXXXXX -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ── RESET & TOKENS ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0c10;
+      --surface:  #111318;
+      --card:     #16191f;
+      --border:   #252830;
+      --accent:   #00e5a0;
+      --accent2:  #ff5f5f;
+      --accent3:  #ffb347;
+      --accent4:  #5b8cff;
+      --text:     #e4e8f0;
+      --muted:    #5c6270;
+      --mono:     'Space Mono', monospace;
+      --sans:     'Syne', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+    section { padding: 64px 0; border-bottom: 1px solid var(--border); }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(180deg, rgba(0,229,160,0.06) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(16px);
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+    }
+    .nav-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .nav-links a {
+      font-size: 12px;
+      font-family: var(--mono);
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 12px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover {
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 96px 0 64px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.25);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+      letter-spacing: 0.1em;
+    }
+    .pulse { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.5s infinite; }
+    @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.7); } }
+
+    h1 {
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    h1 span { color: var(--accent); }
+    .hero p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    /* ── SECTION TITLES ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    .section-desc { color: var(--muted); font-size: 14px; margin-bottom: 36px; }
+
+    /* ── EVENT LOG ── */
+    #event-log {
+      position: fixed;
+      right: 16px; bottom: 16px;
+      width: 300px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      z-index: 999;
+      font-family: var(--mono);
+      font-size: 11px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    .log-header {
+      background: var(--card);
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .log-title { color: var(--accent); font-size: 11px; letter-spacing: 0.1em; }
+    .log-clear { color: var(--muted); cursor: pointer; background: none; border: none; font-family: var(--mono); font-size: 10px; }
+    .log-clear:hover { color: var(--accent2); }
+    #log-entries {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 8px 0;
+    }
+    .log-entry {
+      padding: 5px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      animation: fadeIn 0.3s ease;
+      display: flex; gap: 8px;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }
+    .log-time { color: var(--muted); flex-shrink: 0; }
+    .log-event { color: var(--accent); }
+    .log-empty { padding: 12px 14px; color: var(--muted); text-align: center; }
+
+    /* ── BUTTONS ── */
+    .btn-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      padding: 10px 22px;
+      border-radius: 6px;
+      font-family: var(--sans);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: white;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .btn:active::after { opacity: 0.08; }
+
+    .btn-primary { background: var(--accent); color: #0a0c10; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,160,0.3); }
+
+    .btn-danger { background: var(--accent2); color: white; }
+    .btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,95,95,0.3); }
+
+    .btn-warn { background: var(--accent3); color: #0a0c10; }
+    .btn-warn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,179,71,0.3); }
+
+    .btn-info { background: var(--accent4); color: white; }
+    .btn-info:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(91,140,255,0.3); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-outline-accent {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+    }
+    .btn-outline-accent:hover { background: var(--accent); color: #0a0c10; }
+
+    .btn-lg { padding: 14px 32px; font-size: 15px; }
+    .btn-sm { padding: 6px 14px; font-size: 12px; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+    /* ── PRODUCT CARDS ── */
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .product-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .product-img {
+      height: 140px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px;
+    }
+    .product-body { padding: 16px; }
+    .product-name { font-weight: 700; margin-bottom: 4px; }
+    .product-price { color: var(--accent); font-family: var(--mono); font-size: 14px; margin-bottom: 12px; }
+    .product-actions { display: flex; gap: 8px; }
+
+    /* ── FORMS ── */
+    .form-group { margin-bottom: 18px; }
+    label { display: block; font-size: 12px; font-family: var(--mono); color: var(--muted); margin-bottom: 6px; letter-spacing: 0.05em; }
+    input, textarea, select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 14px;
+      padding: 10px 14px;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+    textarea { min-height: 100px; resize: vertical; }
+    select option { background: var(--surface); }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+    .radio-group, .checkbox-group { display: flex; flex-direction: column; gap: 8px; }
+    .radio-item, .checkbox-item {
+      display: flex; align-items: center; gap: 10px;
+      cursor: pointer; font-size: 14px;
+    }
+    .radio-item input, .checkbox-item input { width: auto; cursor: pointer; accent-color: var(--accent); }
+
+    /* ── TABS ── */
+    .tab-bar {
+      display: flex; gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: var(--sans);
+    }
+    .tab:hover { color: var(--text); }
+    .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ── ACCORDION ── */
+    .accordion-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 8px;
+      overflow: hidden;
+    }
+    .accordion-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 600;
+      background: var(--card);
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .accordion-header:hover { background: var(--surface); }
+    .accordion-icon { font-size: 18px; transition: transform 0.3s; color: var(--accent); }
+    .accordion-item.open .accordion-icon { transform: rotate(45deg); }
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding 0.35s;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .accordion-item.open .accordion-body { max-height: 300px; }
+    .accordion-body-inner { padding: 16px 20px; }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 500;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 480px;
+      width: 90%;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: none; color: var(--muted);
+      font-size: 20px; cursor: pointer;
+    }
+    .modal-close:hover { color: var(--accent2); }
+    .modal h3 { font-size: 20px; margin-bottom: 12px; }
+    .modal p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+
+    /* ── SEARCH ── */
+    .search-wrap {
+      position: relative; margin-bottom: 16px;
+    }
+    .search-icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    .search-wrap input { padding-left: 40px; }
+    .search-results {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      min-height: 60px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── VIDEO PLAYER ── */
+    .video-mock {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .video-mock::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #111 0%, #1a1a2e 100%);
+    }
+    .play-btn {
+      width: 64px; height: 64px;
+      background: var(--accent);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: relative; z-index: 1;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      font-size: 24px;
+    }
+    .play-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px rgba(0,229,160,0.4); }
+    .video-controls {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 20px 16px 12px;
+      display: flex; gap: 10px; align-items: center;
+      z-index: 1;
+    }
+    .progress-bar {
+      flex: 1; height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 30%;
+      transition: width 0.1s;
+    }
+    .video-btn {
+      background: none; border: none; color: white;
+      cursor: pointer; font-size: 18px; padding: 4px;
+      opacity: 0.8;
+    }
+    .video-btn:hover { opacity: 1; color: var(--accent); }
+    .video-time { font-family: var(--mono); font-size: 11px; color: rgba(255,255,255,0.7); }
+    .video-label { position: absolute; top: 16px; left: 16px; z-index: 1; font-size: 12px; color: rgba(255,255,255,0.5); font-family: var(--mono); }
+
+    /* ── SLIDER ── */
+    input[type=range] {
+      -webkit-appearance: none;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      border: none;
+      padding: 0;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    .range-row { display: flex; align-items: center; gap: 16px; }
+    .range-val { font-family: var(--mono); color: var(--accent); font-size: 14px; min-width: 36px; }
+
+    /* ── TOGGLE ── */
+    .toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-label { font-size: 14px; }
+    .toggle-sub { font-size: 12px; color: var(--muted); }
+    .toggle {
+      position: relative; width: 44px; height: 24px;
+      cursor: pointer; flex-shrink: 0;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: var(--border);
+      border-radius: 24px;
+      transition: background 0.3s;
+    }
+    .toggle input:checked + .toggle-track { background: var(--accent); }
+    .toggle-thumb {
+      position: absolute;
+      width: 18px; height: 18px;
+      background: white;
+      border-radius: 50%;
+      top: 3px; left: 3px;
+      transition: transform 0.3s;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+    .toggle input:checked ~ .toggle-thumb { transform: translateX(20px); }
+
+    /* ── RATING ── */
+    .stars { display: flex; gap: 4px; }
+    .star { font-size: 28px; cursor: pointer; color: var(--border); transition: color 0.2s; }
+    .star.lit { color: var(--accent3); }
+    .star:hover { color: var(--accent3); }
+
+    /* ── SCROLL PROGRESS ── */
+    #scroll-progress {
+      position: fixed; top: 0; left: 0;
+      height: 3px; background: var(--accent);
+      width: 0%; z-index: 200;
+      transition: width 0.1s;
+    }
+
+    /* ── DOWNLOAD ── */
+    .download-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+      transition: border-color 0.2s;
+    }
+    .download-item:hover { border-color: var(--accent4); }
+    .download-meta { display: flex; align-items: center; gap: 12px; }
+    .download-icon { font-size: 24px; }
+    .download-name { font-weight: 600; font-size: 14px; }
+    .download-size { font-size: 12px; color: var(--muted); font-family: var(--mono); }
+
+    /* ── SOCIAL SHARE ── */
+    .share-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .share-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      transition: all 0.2s;
+      font-family: var(--sans);
+    }
+    .share-btn:hover { transform: translateY(-2px); }
+    .share-btn.twitter:hover { border-color: #1d9bf0; color: #1d9bf0; }
+    .share-btn.linkedin:hover { border-color: #0a66c2; color: #0a66c2; }
+    .share-btn.github:hover { border-color: #6e40c9; color: #e6e6e6; }
+    .share-btn.copy:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── PRICING ── */
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(0,229,160,0.06), var(--card));
+    }
+    .badge-featured {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--accent); color: #0a0c10;
+      font-size: 10px; font-weight: 700;
+      padding: 4px 12px; border-radius: 100px;
+      font-family: var(--mono); letter-spacing: 0.1em;
+    }
+    .pricing-tier { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 8px; }
+    .pricing-price { font-size: 36px; font-weight: 800; margin-bottom: 4px; }
+    .pricing-price span { font-size: 16px; font-weight: 400; color: var(--muted); }
+    .pricing-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+    .pricing-features { list-style: none; text-align: left; margin-bottom: 24px; }
+    .pricing-features li { padding: 6px 0; font-size: 13px; display: flex; gap: 8px; }
+    .pricing-features li::before { content: '→'; color: var(--accent); }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 280px; right: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-family: var(--mono);
+      color: var(--accent);
+      z-index: 998;
+      transform: translateX(120%);
+      transition: transform 0.3s;
+      max-width: 240px;
+    }
+    #toast.show { transform: translateX(0); }
+
+    /* ── COUNTER ── */
+    .counter-widget {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      width: fit-content;
+    }
+    .counter-btn {
+      width: 36px; height: 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .counter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .counter-val { font-size: 24px; font-weight: 800; font-family: var(--mono); min-width: 40px; text-align: center; }
+
+    /* ── MISC ── */
+    .tag-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(91,140,255,0.12);
+      border: 1px solid rgba(91,140,255,0.25);
+      color: var(--accent4);
+      font-size: 11px;
+      font-family: var(--mono);
+      padding: 4px 10px;
+      border-radius: 4px;
+      margin: 3px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tag-chip:hover { background: rgba(91,140,255,0.25); }
+    .tag-chips { margin-bottom: 16px; }
+
+    .tip-box {
+      background: rgba(0,229,160,0.06);
+      border: 1px solid rgba(0,229,160,0.2);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+    .tip-box strong { color: var(--accent); }
+
+    .divider { height: 1px; background: var(--border); margin: 32px 0; }
+
+    footer {
+      text-align: center;
+      padding: 48px 24px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    footer span { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<!-- GTM noscript fallback -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress"></div>
+
+<!-- Event Logger -->
+<div id="event-log">
+  <div class="log-header">
+    <span class="log-title">⬡ datalayer events</span>
+    <button class="log-clear" onclick="clearLog()">clear</button>
+  </div>
+  <div id="log-entries">
+    <div class="log-empty">Interact to fire events →</div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modal-title">Modal Title</h3>
+    <p id="modal-body">Modal content here for GA4 tracking practice.</p>
+    <button class="btn btn-primary" onclick="fireEvent('modal_cta_click',{modal_id:'demo_modal',cta_text:'Get Started'});closeModal()">Get Started</button>
+  </div>
+</div>
+
+<!-- ══════════════ NAVIGATION ══════════════ -->
+<header>
+  <nav>
+    <div class="logo">▣ ANALYTICS_LAB</div>
+    <div class="nav-links">
+      <a href="#buttons"    data-nav="buttons"    onclick="fireEvent('nav_click',{nav_item:'buttons'})">Buttons</a>
+      <a href="#forms"      data-nav="forms"      onclick="fireEvent('nav_click',{nav_item:'forms'})">Forms</a>
+      <a href="#ecommerce"  data-nav="ecommerce"  onclick="fireEvent('nav_click',{nav_item:'ecommerce'})">E-Commerce</a>
+      <a href="#media"      data-nav="media"      onclick="fireEvent('nav_click',{nav_item:'media'})">Media</a>
+      <a href="#engagement" data-nav="engagement" onclick="fireEvent('nav_click',{nav_item:'engagement'})">Engagement</a>
+      <a href="#social"     data-nav="social"     onclick="fireEvent('nav_click',{nav_item:'social'})">Social</a>
+    </div>
+  </nav>
+</header>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge"><div class="pulse"></div> GTM + GA4 PRACTICE ENVIRONMENT</div>
+    <h1>Your <span>Analytics</span><br>Lab</h1>
+    <p>Every element on this page fires real dataLayer events. Build your tags, test your triggers, and master GA4 reporting.</p>
+    <div class="btn-grid" style="justify-content:center; gap:12px;">
+      <button class="btn btn-primary btn-lg"
+        onclick="fireEvent('hero_cta_click',{cta_text:'Explore Events',position:'hero_primary'})">
+        Explore Events
+      </button>
+      <button class="btn btn-ghost btn-lg"
+        onclick="openModal('View Documentation','This modal tracks: modal_open, modal_cta_click, and modal_close events — perfect for GTM triggers.')">
+        View Docs
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 1. BUTTONS ══════════════ -->
+<section id="buttons">
+  <div class="container">
+    <div class="section-label">01 — click events</div>
+    <h2>Button Interactions</h2>
+    <p class="section-desc">Track button_click events with category, label, and value dimensions. Great for testing GA4 custom events.</p>
+
+    <div class="card" style="margin-bottom:20px;">
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px;font-family:var(--mono);">→ VARIANT BUTTONS — fire: <span style="color:var(--accent)">button_click</span></p>
+      <div class="btn-grid">
+        <button class="btn btn-primary"       onclick="fireEvent('button_click',{button_text:'Primary CTA',button_category:'primary',button_variant:'solid'})">Primary CTA</button>
+        <button class="btn btn-danger"        onclick="fireEvent('button_click',{button_text:'Delete Action',button_category:'destructive',button_variant:'solid'})">Delete Action</button>
+        <button class="btn btn-warn"          onclick="fireEvent('button_click',{button_text:'Warning CTA',button_category:'warning',button_variant:'solid'})">Warning CTA</button>
+        <button class="btn btn-info"          onclick="fireEvent('button_click',{button_text:'Info Action',button_category:'info',button_variant:'solid'})">Info Action</button>
+        <button class="btn btn-ghost"         onclick="fireEvent('button_click',{button_text:'Ghost Button',button_category:'secondary',button_variant:'ghost'})">Ghost</button>
+        <button class="btn btn-outline-accent" onclick="fireEvent('button_click',{button_text:'Outline CTA',button_category:'secondary',button_variant:'outline'})">Outline</button>
+        <button class="btn btn-primary btn-sm" onclick="fireEvent('button_click',{button_text:'Small CTA',button_category:'primary',button_size:'sm'})">Small</button>
+        <button class="btn btn-primary btn-lg" onclick="fireEvent('button_click',{button_text:'Large CTA',button_category:'primary',button_size:'lg'})">Large CTA</button>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;font-family:var(--mono);">→ MODAL TRIGGERS — fire: <span style="color:var(--accent)">modal_open</span></p>
+        <div class="btn-grid">
+          <button class="btn btn-primary" onclick="openModal('Contact Us','Fill in your details — this modal tracks open, close, and CTA clicks as separate GA4 events.')">Open Modal</button>
+          <button class="btn btn-ghost"   onclick="openModal('Feature Preview','Track which features users preview most — a key funnel step before conversion.')">Feature Preview</button>
+          <button class="btn btn-info"    onclick="openModal('Subscribe','Newsletter modal — critical for tracking lead generation micro-conversions.')">Subscribe</button>
+        </div>
+      </div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:16px;font-family:var(--mono);">→ COUNTER — fire: <span style="color:var(--accent)">counter_change</span></p>
+        <div class="counter-widget">
+          <button class="counter-btn" onclick="changeCounter(-1)">−</button>
+          <div class="counter-val" id="counter-val">0</div>
+          <button class="counter-btn" onclick="changeCounter(1)">+</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted);margin-top:12px;">Tracks quantity changes — ideal for cart quantity analytics</p>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top:16px;">
+      <strong>GTM Tip:</strong> Create a "Click" trigger with Click Text or a custom data attribute to differentiate these buttons without touching code.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 2. FORMS ══════════════ -->
+<section id="forms">
+  <div class="container">
+    <div class="section-label">02 — form events</div>
+    <h2>Form Tracking</h2>
+    <p class="section-desc">Track form_start, form_field_focus, and form_submit. Use GTM's built-in Form trigger or custom dataLayer pushes.</p>
+
+    <div class="grid-2">
+
+      <!-- Contact Form -->
+      <div class="card">
+        <h3 style="margin-bottom:18px;font-size:16px;">📬 Contact Form</h3>
+        <form id="contact-form" onsubmit="handleFormSubmit(event,'contact_form')">
+          <div class="form-row">
+            <div class="form-group">
+              <label>FIRST NAME *</label>
+              <input type="text" placeholder="John" onfocus="fireEvent('form_field_focus',{form_id:'contact_form',field_name:'first_name'})" required />
+            </div>
+            <div class="form-group">
+              <label>LAST NAME *</label>
+              <input type="text" placeholder="Doe" onfocus="fireEvent('form_field_focus',{form_id:'contact_form',field_name:'last_name'})" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>EMAIL ADDRESS *</label>
+            <input type="email" placeholder="john@example.com" onfocus="fireEvent('form_field_focus',{form_id:'contact_form',field_name:'email'})" required />
+          </div>
+          <div class="form-group">
+            <label>SUBJECT</label>
+            <select onfocus="fireEvent('form_field_focus',{form_id:'contact_form',field_name:'subject'})" onchange="fireEvent('form_field_change',{form_id:'contact_form',field_name:'subject',field_value:this.value})">
+              <option value="">Select a topic...</option>
+              <option value="analytics">Analytics Setup</option>
+              <option value="gtm">GTM Help</option>
+              <option value="ga4">GA4 Reporting</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>MESSAGE *</label>
+            <textarea placeholder="Tell me what you need..." onfocus="fireEvent('form_field_focus',{form_id:'contact_form',field_name:'message'})" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%">Send Message</button>
+        </form>
+      </div>
+
+      <!-- Newsletter + Preferences -->
+      <div>
+        <div class="card" style="margin-bottom:16px;">
+          <h3 style="margin-bottom:18px;font-size:16px;">📧 Newsletter Signup</h3>
+          <form id="newsletter-form" onsubmit="handleFormSubmit(event,'newsletter_form')">
+            <div class="form-group">
+              <label>EMAIL</label>
+              <input type="email" placeholder="you@example.com" onfocus="fireEvent('form_field_focus',{form_id:'newsletter_form',field_name:'email'})" required />
+            </div>
+            <div class="form-group">
+              <label>FREQUENCY PREFERENCE</label>
+              <div class="radio-group">
+                <label class="radio-item">
+                  <input type="radio" name="freq" value="daily" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'frequency',field_value:'daily'})"> Daily digest
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="freq" value="weekly" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'frequency',field_value:'weekly'})"> Weekly roundup
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="freq" value="monthly" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'frequency',field_value:'monthly'})"> Monthly report
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>INTERESTS</label>
+              <div class="checkbox-group">
+                <label class="checkbox-item"><input type="checkbox" value="gtm" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'interest_gtm',field_value:this.checked})"> Tag Management</label>
+                <label class="checkbox-item"><input type="checkbox" value="ga4" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'interest_ga4',field_value:this.checked})"> GA4 & BigQuery</label>
+                <label class="checkbox-item"><input type="checkbox" value="crm" onchange="fireEvent('form_field_change',{form_id:'newsletter_form',field_name:'interest_crm',field_value:this.checked})"> CRM Analytics</label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-outline-accent" style="width:100%">Subscribe</button>
+          </form>
+        </div>
+
+        <!-- Inline Lead Form -->
+        <div class="card">
+          <h3 style="margin-bottom:18px;font-size:16px;">⚡ Quick Lead Capture</h3>
+          <form id="lead-form" onsubmit="handleFormSubmit(event,'lead_form')">
+            <div class="form-group">
+              <label>COMPANY EMAIL</label>
+              <input type="email" placeholder="company@domain.com" onfocus="fireEvent('form_field_focus',{form_id:'lead_form',field_name:'company_email'})" required />
+            </div>
+            <div class="form-group">
+              <label>BUDGET RANGE</label>
+              <select onchange="fireEvent('form_field_change',{form_id:'lead_form',field_name:'budget',field_value:this.value})">
+                <option value="">Select budget...</option>
+                <option value="startup">$0 – $500/mo</option>
+                <option value="growth">$500 – $2k/mo</option>
+                <option value="scale">$2k – $10k/mo</option>
+                <option value="enterprise">$10k+/mo</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-warn" style="width:100%">Request a Demo</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="card" style="margin-top:16px;">
+      <h3 style="margin-bottom:16px;font-size:16px;">🔍 Site Search Tracking</h3>
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search-input" placeholder="Search articles, guides, tools..." oninput="handleSearch(this.value)" />
+      </div>
+      <div class="search-results" id="search-results">Start typing to fire <strong style="color:var(--accent)">search</strong> events with the search_term parameter...</div>
+    </div>
+
+    <div class="tip-box" style="margin-top:16px;">
+      <strong>GA4 Tip:</strong> Use <code>form_start</code>, <code>form_field_focus</code>, and <code>form_submit</code> as your core form funnel. Add <code>form_id</code> and <code>form_name</code> as custom dimensions in GA4.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3. E-COMMERCE ══════════════ -->
+<section id="ecommerce">
+  <div class="container">
+    <div class="section-label">03 — ecommerce events</div>
+    <h2>E-Commerce Funnel</h2>
+    <p class="section-desc">Fire GA4 standard ecommerce events: view_item, add_to_cart, remove_from_cart, begin_checkout, purchase.</p>
+
+    <div class="grid-3">
+      <div class="product-card" onclick="fireEvent('view_item',{items:[{item_id:'P001',item_name:'Analytics Pro',price:49,item_category:'Software'}]})">
+        <div class="product-img" style="background: linear-gradient(135deg,#1a1a3e,#0a2030);">📊</div>
+        <div class="product-body">
+          <div class="product-name">Analytics Pro</div>
+          <div class="product-price">$49.00</div>
+          <div class="product-actions">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();fireEvent('add_to_cart',{currency:'USD',value:49,items:[{item_id:'P001',item_name:'Analytics Pro',price:49,quantity:1,item_category:'Software'}]});showToast('Added Analytics Pro to cart')">Add to Cart</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();fireEvent('add_to_wishlist',{items:[{item_id:'P001',item_name:'Analytics Pro'}]})">♡</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="fireEvent('view_item',{items:[{item_id:'P002',item_name:'GTM Masterclass',price:129,item_category:'Course'}]})">
+        <div class="product-img" style="background: linear-gradient(135deg,#1f0a2e,#0a1a30);">🎓</div>
+        <div class="product-body">
+          <div class="product-name">GTM Masterclass</div>
+          <div class="product-price">$129.00</div>
+          <div class="product-actions">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();fireEvent('add_to_cart',{currency:'USD',value:129,items:[{item_id:'P002',item_name:'GTM Masterclass',price:129,quantity:1,item_category:'Course'}]});showToast('Added GTM Masterclass to cart')">Add to Cart</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();fireEvent('add_to_wishlist',{items:[{item_id:'P002',item_name:'GTM Masterclass'}]})">♡</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="fireEvent('view_item',{items:[{item_id:'P003',item_name:'Data Studio Pack',price:79,item_category:'Template'}]})">
+        <div class="product-img" style="background: linear-gradient(135deg,#0a2e1f,#1a300a);">📈</div>
+        <div class="product-body">
+          <div class="product-name">Data Studio Pack</div>
+          <div class="product-price">$79.00</div>
+          <div class="product-actions">
+            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();fireEvent('add_to_cart',{currency:'USD',value:79,items:[{item_id:'P003',item_name:'Data Studio Pack',price:79,quantity:1,item_category:'Template'}]});showToast('Added Data Studio Pack to cart')">Add to Cart</button>
+            <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();fireEvent('add_to_wishlist',{items:[{item_id:'P003',item_name:'Data Studio Pack'}]})">♡</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+      <button class="btn btn-warn" onclick="fireEvent('begin_checkout',{currency:'USD',value:257,items:[{item_id:'P001'},{item_id:'P002'},{item_id:'P003'}]});showToast('Checkout started!')">Begin Checkout</button>
+      <button class="btn btn-danger" onclick="fireEvent('remove_from_cart',{currency:'USD',value:49,items:[{item_id:'P001',item_name:'Analytics Pro',price:49,quantity:1}]});showToast('Removed from cart')">Remove from Cart</button>
+      <button class="btn btn-info"   onclick="fireEvent('add_payment_info',{payment_type:'credit_card',currency:'USD',value:257})">Add Payment Info</button>
+      <button class="btn btn-primary" onclick="fireEvent('purchase',{transaction_id:'TXN-'+Date.now(),currency:'USD',value:257,tax:23.13,shipping:0,items:[{item_id:'P001',item_name:'Analytics Pro',price:49,quantity:1}]});showToast('🎉 Purchase fired!')">Simulate Purchase</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Pricing -->
+    <h3 style="margin-bottom:20px;">Pricing Plan Clicks</h3>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-tier">STARTER</div>
+        <div class="pricing-price">$0<span>/mo</span></div>
+        <div class="pricing-desc">For individuals learning analytics</div>
+        <ul class="pricing-features">
+          <li>10 events/day</li>
+          <li>Basic GA4 setup</li>
+          <li>Community support</li>
+        </ul>
+        <button class="btn btn-ghost" style="width:100%" onclick="fireEvent('select_item',{items:[{item_id:'PLAN_FREE',item_name:'Starter Plan',price:0,item_category:'Subscription'}]});fireEvent('plan_click',{plan_name:'starter',plan_price:0})">Get Free</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="badge-featured">POPULAR</div>
+        <div class="pricing-tier">GROWTH</div>
+        <div class="pricing-price">$49<span>/mo</span></div>
+        <div class="pricing-desc">For analytics professionals</div>
+        <ul class="pricing-features">
+          <li>Unlimited events</li>
+          <li>Advanced GTM setup</li>
+          <li>GA4 custom dimensions</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn btn-primary" style="width:100%" onclick="fireEvent('select_item',{items:[{item_id:'PLAN_GROWTH',item_name:'Growth Plan',price:49,item_category:'Subscription'}]});fireEvent('plan_click',{plan_name:'growth',plan_price:49})">Start Trial</button>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-tier">ENTERPRISE</div>
+        <div class="pricing-price">$299<span>/mo</span></div>
+        <div class="pricing-desc">For teams and agencies</div>
+        <ul class="pricing-features">
+          <li>BigQuery export</li>
+          <li>Custom reporting</li>
+          <li>SLA + dedicated CSM</li>
+        </ul>
+        <button class="btn btn-ghost" style="width:100%" onclick="fireEvent('select_item',{items:[{item_id:'PLAN_ENT',item_name:'Enterprise Plan',price:299,item_category:'Subscription'}]});fireEvent('plan_click',{plan_name:'enterprise',plan_price:299})">Contact Sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 4. MEDIA ══════════════ -->
+<section id="media">
+  <div class="container">
+    <div class="section-label">04 — media events</div>
+    <h2>Video & Media Tracking</h2>
+    <p class="section-desc">Track video_start, video_progress (25%/50%/75%), video_complete, and custom media events.</p>
+
+    <div class="video-mock" id="video-player">
+      <div class="video-label">▶ GTM & GA4 Masterclass — Ep. 01</div>
+      <button class="play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+      <div class="video-controls">
+        <button class="video-btn" onclick="togglePlay()" id="ctrl-play">▶</button>
+        <div class="progress-bar" onclick="seekVideo(event)" id="video-progress-bar">
+          <div class="progress-fill" id="video-progress-fill"></div>
+        </div>
+        <span class="video-time" id="video-time">0:00 / 12:34</span>
+        <button class="video-btn" onclick="fireEvent('video_quality_change',{video_title:'GTM Masterclass Ep1',quality:'1080p'});showToast('Quality: 1080p')">HD</button>
+        <button class="video-btn" onclick="fireEvent('video_mute',{video_title:'GTM Masterclass Ep1',muted:true});showToast('Muted')">🔇</button>
+        <button class="video-btn" onclick="fireEvent('video_fullscreen',{video_title:'GTM Masterclass Ep1'});showToast('Fullscreen fired')">⛶</button>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin-top:16px;">
+      <strong>GTM Tip:</strong> GTM has built-in YouTube Video tracking. For custom players, use a timer trigger every 10% with a dataLayer variable for <code>video_percent</code>.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 5. ENGAGEMENT ══════════════ -->
+<section id="engagement">
+  <div class="container">
+    <div class="section-label">05 — engagement events</div>
+    <h2>Advanced Engagement</h2>
+    <p class="section-desc">Tabs, accordions, ratings, toggles — track every micro-interaction for a full user journey picture.</p>
+
+    <div class="grid-2">
+
+      <!-- Tabs -->
+      <div class="card">
+        <h3 style="margin-bottom:20px;font-size:16px;">📋 Tab Navigation</h3>
+        <div class="tab-bar">
+          <button class="tab active" onclick="switchTab(this,'tab-overview')">Overview</button>
+          <button class="tab"        onclick="switchTab(this,'tab-specs')">Specs</button>
+          <button class="tab"        onclick="switchTab(this,'tab-reviews')">Reviews</button>
+          <button class="tab"        onclick="switchTab(this,'tab-faq')">FAQ</button>
+        </div>
+        <div id="tab-overview" class="tab-content active">
+          <p style="color:var(--muted);font-size:14px;">Overview tab viewed. GTM fires <code style="color:var(--accent)">tab_view</code> event with <code>tab_name: "overview"</code>.</p>
+        </div>
+        <div id="tab-specs" class="tab-content">
+          <p style="color:var(--muted);font-size:14px;">Specs tab viewed. Track which product tabs users visit most to optimize content hierarchy.</p>
+        </div>
+        <div id="tab-reviews" class="tab-content">
+          <p style="color:var(--muted);font-size:14px;">Reviews tab viewed. Social proof engagement is a key signal for purchase intent modelling.</p>
+        </div>
+        <div id="tab-faq" class="tab-content">
+          <p style="color:var(--muted);font-size:14px;">FAQ tab viewed. High FAQ engagement often signals pre-purchase hesitation — a retargeting opportunity.</p>
+        </div>
+      </div>
+
+      <!-- Star Rating -->
+      <div class="card">
+        <h3 style="margin-bottom:20px;font-size:16px;">⭐ Star Rating</h3>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Rate this analytics page — fires a <code style="color:var(--accent)">rating_submit</code> event.</p>
+        <div class="stars" id="star-rating">
+          <span class="star" data-val="1" onclick="submitRating(1)">★</span>
+          <span class="star" data-val="2" onclick="submitRating(2)">★</span>
+          <span class="star" data-val="3" onclick="submitRating(3)">★</span>
+          <span class="star" data-val="4" onclick="submitRating(4)">★</span>
+          <span class="star" data-val="5" onclick="submitRating(5)">★</span>
+        </div>
+        <p id="rating-msg" style="font-size:13px;color:var(--muted);margin-top:12px;font-family:var(--mono);">Click a star to rate</p>
+
+        <div class="divider"></div>
+
+        <h3 style="margin-bottom:16px;font-size:16px;">🎚️ Range Slider</h3>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">Track slider interaction for configurators, price filters, etc.</p>
+        <div class="range-row">
+          <input type="range" min="0" max="100" value="60" style="flex:1"
+            oninput="document.getElementById('range-val').textContent=this.value+'%'"
+            onchange="fireEvent('slider_change',{slider_id:'budget_slider',slider_value:this.value})" />
+          <span class="range-val" id="range-val">60%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accordion -->
+    <div style="margin-top:20px;">
+      <h3 style="margin-bottom:16px;font-size:16px;">📂 FAQ Accordion</h3>
+      <div class="accordion-item" id="acc-1">
+        <div class="accordion-header" onclick="toggleAccordion('acc-1','What is GTM?')">
+          What is Google Tag Manager? <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body"><div class="accordion-body-inner">
+          GTM is a tag management system that lets you deploy marketing and analytics tags without editing code. Each accordion open fires an <code style="color:var(--accent)">accordion_open</code> event with the question as a dimension — helping you see which FAQs get the most engagement.
+        </div></div>
+      </div>
+      <div class="accordion-item" id="acc-2">
+        <div class="accordion-header" onclick="toggleAccordion('acc-2','How does GA4 differ?')">
+          How does GA4 differ from Universal Analytics? <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body"><div class="accordion-body-inner">
+          GA4 is event-based (vs. session-based), uses machine learning, and supports cross-platform tracking. Track your accordion interactions to understand which FAQs users explore on their path to conversion.
+        </div></div>
+      </div>
+      <div class="accordion-item" id="acc-3">
+        <div class="accordion-header" onclick="toggleAccordion('acc-3','What are custom dimensions?')">
+          What are GA4 custom dimensions &amp; metrics? <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body"><div class="accordion-body-inner">
+          Custom dimensions let you attach extra data to events — like user_role, plan_name, or page_section. You can register these in GA4 Admin → Custom Definitions.
+        </div></div>
+      </div>
+      <div class="accordion-item" id="acc-4">
+        <div class="accordion-header" onclick="toggleAccordion('acc-4','GTM triggers vs tags?')">
+          What is the difference between GTM Triggers and Tags? <span class="accordion-icon">+</span>
+        </div>
+        <div class="accordion-body"><div class="accordion-body-inner">
+          Tags are what fires (GA4 event, Facebook Pixel, etc.). Triggers are when they fire (page view, click, form submit). Variables provide the dynamic data passed with each tag.
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Toggles -->
+    <div class="card" style="margin-top:20px;">
+      <h3 style="margin-bottom:16px;font-size:16px;">⚙️ Preference Toggles</h3>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Email Notifications</div><div class="toggle-sub">Receive weekly reports</div></div>
+        <label class="toggle"><input type="checkbox" checked onchange="fireEvent('preference_toggle',{preference:'email_notifications',enabled:this.checked})"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Analytics Cookies</div><div class="toggle-sub">Improve your experience</div></div>
+        <label class="toggle"><input type="checkbox" onchange="fireEvent('preference_toggle',{preference:'analytics_cookies',enabled:this.checked})"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Marketing Emails</div><div class="toggle-sub">Product updates &amp; tips</div></div>
+        <label class="toggle"><input type="checkbox" checked onchange="fireEvent('preference_toggle',{preference:'marketing_emails',enabled:this.checked})"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div><div class="toggle-label">Dark Mode</div><div class="toggle-sub">Interface preference</div></div>
+        <label class="toggle"><input type="checkbox" checked onchange="fireEvent('preference_toggle',{preference:'dark_mode',enabled:this.checked})"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+    </div>
+
+    <!-- Scroll Depth indicator -->
+    <div class="card" style="margin-top:20px;">
+      <h3 style="margin-bottom:12px;font-size:16px;">📏 Scroll Depth Tracking</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">Fires <code style="color:var(--accent)">scroll_depth</code> at 25%, 50%, 75%, 90% of the page.</p>
+      <div style="background:var(--surface);border-radius:6px;padding:12px;font-family:var(--mono);font-size:12px;display:flex;gap:8px;flex-wrap:wrap;" id="scroll-milestones">
+        <span id="sd-25"  style="padding:4px 10px;border:1px solid var(--border);border-radius:4px;color:var(--muted)">25%</span>
+        <span id="sd-50"  style="padding:4px 10px;border:1px solid var(--border);border-radius:4px;color:var(--muted)">50%</span>
+        <span id="sd-75"  style="padding:4px 10px;border:1px solid var(--border);border-radius:4px;color:var(--muted)">75%</span>
+        <span id="sd-90"  style="padding:4px 10px;border:1px solid var(--border);border-radius:4px;color:var(--muted)">90%</span>
+      </div>
+    </div>
+
+    <!-- Tag Chips for filter tracking -->
+    <div class="card" style="margin-top:20px;">
+      <h3 style="margin-bottom:12px;font-size:16px;">🏷️ Filter / Tag Click Tracking</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:12px;">Track which content filters users click — key for content discovery analytics.</p>
+      <div class="tag-chips">
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'google-analytics',section:'blog'})">Google Analytics</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'gtm',section:'blog'})">GTM</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'conversion-tracking',section:'blog'})">Conversion Tracking</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'bigquery',section:'blog'})">BigQuery</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'looker-studio',section:'blog'})">Looker Studio</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'server-side-gtm',section:'blog'})">Server-Side GTM</span>
+        <span class="tag-chip" onclick="fireEvent('tag_filter_click',{tag:'ga4-explorations',section:'blog'})">GA4 Explorations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 6. SOCIAL & DOWNLOADS ══════════════ -->
+<section id="social">
+  <div class="container">
+    <div class="section-label">06 — social & downloads</div>
+    <h2>Social Shares & Downloads</h2>
+    <p class="section-desc">Track outbound link clicks, share actions, and file downloads for a complete content engagement picture.</p>
+
+    <div class="grid-2">
+      <!-- Social -->
+      <div class="card">
+        <h3 style="margin-bottom:16px;font-size:16px;">📣 Share Buttons</h3>
+        <div class="share-grid">
+          <button class="share-btn twitter"  onclick="fireEvent('share',{method:'twitter',content_type:'article',item_id:'analytics-lab-page'});showToast('Twitter share fired!')">𝕏 Share on X</button>
+          <button class="share-btn linkedin" onclick="fireEvent('share',{method:'linkedin',content_type:'article',item_id:'analytics-lab-page'});showToast('LinkedIn share fired!')">in LinkedIn</button>
+          <button class="share-btn github"   onclick="fireEvent('share',{method:'github',content_type:'project',item_id:'portfolio-repo'});showToast('GitHub share fired!')">⎇ GitHub</button>
+          <button class="share-btn copy"     onclick="navigator.clipboard.writeText(location.href);fireEvent('share',{method:'copy_link',content_type:'page',item_id:'analytics-lab-page'});showToast('Link copied!')">⧉ Copy Link</button>
+        </div>
+        <div class="divider"></div>
+        <h3 style="margin-bottom:16px;font-size:16px;">🔗 Outbound Link Clicks</h3>
+        <div class="btn-grid">
+          <a href="https://analytics.google.com" target="_blank" onclick="fireEvent('outbound_link_click',{link_url:'analytics.google.com',link_text:'GA4 Console',link_domain:'analytics.google.com'})" style="text-decoration:none"><button class="btn btn-ghost btn-sm">GA4 Console ↗</button></a>
+          <a href="https://tagmanager.google.com" target="_blank" onclick="fireEvent('outbound_link_click',{link_url:'tagmanager.google.com',link_text:'GTM Console',link_domain:'tagmanager.google.com'})" style="text-decoration:none"><button class="btn btn-ghost btn-sm">GTM Console ↗</button></a>
+          <a href="https://datastudio.google.com" target="_blank" onclick="fireEvent('outbound_link_click',{link_url:'datastudio.google.com',link_text:'Looker Studio',link_domain:'datastudio.google.com'})" style="text-decoration:none"><button class="btn btn-ghost btn-sm">Looker Studio ↗</button></a>
+        </div>
+      </div>
+
+      <!-- Downloads -->
+      <div class="card">
+        <h3 style="margin-bottom:16px;font-size:16px;">⬇️ File Downloads</h3>
+        <div class="download-item">
+          <div class="download-meta">
+            <span class="download-icon">📄</span>
+            <div>
+              <div class="download-name">GTM Setup Checklist</div>
+              <div class="download-size">PDF · 142 KB</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fireEvent('file_download',{file_name:'GTM_Setup_Checklist.pdf',file_extension:'pdf',file_size_kb:142,link_text:'Download'})">Download</button>
+        </div>
+        <div class="download-item">
+          <div class="download-meta">
+            <span class="download-icon">📊</span>
+            <div>
+              <div class="download-name">GA4 Event Schema</div>
+              <div class="download-size">XLSX · 88 KB</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fireEvent('file_download',{file_name:'GA4_Event_Schema.xlsx',file_extension:'xlsx',file_size_kb:88,link_text:'Download'})">Download</button>
+        </div>
+        <div class="download-item">
+          <div class="download-meta">
+            <span class="download-icon">🗂️</span>
+            <div>
+              <div class="download-name">Measurement Plan Template</div>
+              <div class="download-size">DOCX · 56 KB</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fireEvent('file_download',{file_name:'Measurement_Plan_Template.docx',file_extension:'docx',file_size_kb:56,link_text:'Download'})">Download</button>
+        </div>
+        <div class="download-item">
+          <div class="download-meta">
+            <span class="download-icon">💾</span>
+            <div>
+              <div class="download-name">GTM Container Export</div>
+              <div class="download-size">JSON · 12 KB</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="fireEvent('file_download',{file_name:'GTM_Container_Export.json',file_extension:'json',file_size_kb:12,link_text:'Download'})">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error tracking -->
+    <div class="card" style="margin-top:20px;">
+      <h3 style="margin-bottom:16px;font-size:16px;">⚠️ Error & Exception Tracking</h3>
+      <p style="color:var(--muted);font-size:13px;margin-bottom:16px;">Simulate error events for GA4 exception tracking and debugging workflows.</p>
+      <div class="btn-grid">
+        <button class="btn btn-danger btn-sm" onclick="fireEvent('exception',{description:'404_not_found',fatal:false,page:'/missing-page'})">Simulate 404</button>
+        <button class="btn btn-danger btn-sm" onclick="fireEvent('exception',{description:'payment_failed',fatal:true,error_code:'PAY_001'})">Payment Error</button>
+        <button class="btn btn-danger btn-sm" onclick="fireEvent('exception',{description:'form_validation_error',fatal:false,form_id:'contact_form',field:'email'})">Form Validation Error</button>
+        <button class="btn btn-warn btn-sm"   onclick="fireEvent('exception',{description:'api_timeout',fatal:false,endpoint:'/api/submit'})">API Timeout</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div>Built for <span>GTM & GA4</span> analytics practice — © 2025 Analytics Lab</div>
+  <div style="margin-top:8px;color:#333">Replace <span style="color:var(--accent)">GTM-XXXXXXX</span> with your container ID to go live</div>
+</footer>
+
+<!-- ════════════════════════════════════
+     JAVASCRIPT — dataLayer + UI logic
+     ════════════════════════════════════ -->
+<script>
+  // ── dataLayer init
+  window.dataLayer = window.dataLayer || [];
+
+  // ── Core event pusher
+  function fireEvent(eventName, params = {}) {
+    const payload = {
+      event: eventName,
+      timestamp: new Date().toISOString(),
+      page_location: window.location.href,
+      page_title: document.title,
+      ...params
+    };
+    window.dataLayer.push(payload);
+    logEvent(eventName, params);
+    console.log('▣ dataLayer push:', payload);
+  }
+
+  // ── Event Log UI
+  let logEmpty = true;
+  function logEvent(name, params) {
+    const entries = document.getElementById('log-entries');
+    if (logEmpty) { entries.innerHTML = ''; logEmpty = false; }
+    const t = new Date().toLocaleTimeString('en',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const el = document.createElement('div');
+    el.className = 'log-entry';
+    el.innerHTML = `<span class="log-time">${t}</span><span class="log-event">${name}</span>`;
+    entries.prepend(el);
+    if (entries.children.length > 30) entries.lastChild.remove();
+  }
+  function clearLog() {
+    document.getElementById('log-entries').innerHTML = '<div class="log-empty">Interact to fire events →</div>';
+    logEmpty = true;
+  }
+
+  // ── Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── Modal
+  function openModal(title, body) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-body').textContent = body;
+    document.getElementById('modal').classList.add('open');
+    fireEvent('modal_open', { modal_id: 'demo_modal', modal_title: title });
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+    fireEvent('modal_close', { modal_id: 'demo_modal' });
+  }
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ── Forms
+  function handleFormSubmit(e, formId) {
+    e.preventDefault();
+    fireEvent('form_submit', { form_id: formId, form_name: formId.replace(/_/g,' ') });
+    showToast('✓ ' + formId.replace(/_/g,' ') + ' submitted!');
+    fireEvent('generate_lead', { form_id: formId });
+  }
+
+  // ── Search (debounced)
+  let searchTimer;
+  function handleSearch(val) {
+    clearTimeout(searchTimer);
+    if (!val) { document.getElementById('search-results').innerHTML = 'Start typing to fire <strong style="color:var(--accent)">search</strong> events...'; return; }
+    searchTimer = setTimeout(() => {
+      fireEvent('search', { search_term: val, search_type: 'site_search' });
+      document.getElementById('search-results').innerHTML = `<span style="color:var(--accent)">search</span> event fired — <code style="font-size:12px">search_term: "${val}"</code>`;
+    }, 500);
+  }
+
+  // ── Tabs
+  function switchTab(el, tabId) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById(tabId).classList.add('active');
+    fireEvent('tab_view', { tab_name: tabId.replace('tab-',''), section: 'product_details' });
+  }
+
+  // ── Accordion
+  function toggleAccordion(id, question) {
+    const el = document.getElementById(id);
+    const isOpen = el.classList.contains('open');
+    document.querySelectorAll('.accordion-item').forEach(a => a.classList.remove('open'));
+    if (!isOpen) {
+      el.classList.add('open');
+      fireEvent('accordion_open', { accordion_id: id, question: question });
+    }
+  }
+
+  // ── Counter
+  let counterVal = 0;
+  function changeCounter(dir) {
+    counterVal = Math.max(0, counterVal + dir);
+    document.getElementById('counter-val').textContent = counterVal;
+    fireEvent('counter_change', { counter_id: 'quantity', value: counterVal, action: dir > 0 ? 'increment' : 'decrement' });
+  }
+
+  // ── Star Rating
+  function submitRating(val) {
+    document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('lit', i < val));
+    document.getElementById('rating-msg').textContent = `You rated: ${val}/5 ⭐`;
+    fireEvent('rating_submit', { rating_value: val, rating_max: 5, content_id: 'analytics-lab' });
+    showToast(`Rating: ${val}/5 fired!`);
+  }
+  document.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('mouseover', () => {
+      const v = +s.dataset.val;
+      document.querySelectorAll('.star').forEach((x,i) => x.classList.toggle('lit', i < v));
+    });
+    s.addEventListener('mouseleave', () => {
+      // restore to nothing unless rated
+    });
+  });
+
+  // ── Video Player (mock)
+  let playing = false, progress = 30, videoTimer;
+  const videoMilestones = { 25: false, 50: false, 75: false, 100: false };
+  function togglePlay() {
+    playing = !playing;
+    document.getElementById('play-btn').textContent = playing ? '⏸' : '▶';
+    document.getElementById('ctrl-play').textContent = playing ? '⏸' : '▶';
+    fireEvent(playing ? 'video_start' : 'video_pause', {
+      video_title: 'GTM Masterclass Ep1',
+      video_provider: 'custom',
+      video_percent: progress
+    });
+    if (playing) {
+      videoTimer = setInterval(() => {
+        progress = Math.min(100, progress + 0.5);
+        document.getElementById('video-progress-fill').style.width = progress + '%';
+        const mins = Math.floor(progress * 7.54 / 60);
+        const secs = Math.floor(progress * 7.54 % 60);
+        document.getElementById('video-time').textContent = `${mins}:${secs.toString().padStart(2,'0')} / 12:34`;
+        [25, 50, 75, 100].forEach(m => {
+          if (progress >= m && !videoMilestones[m]) {
+            videoMilestones[m] = true;
+            fireEvent(m === 100 ? 'video_complete' : 'video_progress', {
+              video_title: 'GTM Masterclass Ep1',
+              video_percent: m,
+              video_duration: 754
+            });
+            showToast(`Video ${m}% fired!`);
+          }
+        });
+        if (progress >= 100) { clearInterval(videoTimer); playing = false; document.getElementById('play-btn').textContent = '▶'; }
+      }, 150);
+    } else {
+      clearInterval(videoTimer);
+    }
+  }
+  function seekVideo(e) {
+    const bar = document.getElementById('video-progress-bar');
+    const pct = Math.round((e.offsetX / bar.offsetWidth) * 100);
+    progress = pct;
+    document.getElementById('video-progress-fill').style.width = pct + '%';
+    fireEvent('video_seek', { video_title: 'GTM Masterclass Ep1', video_percent: pct });
+  }
+
+  // ── Scroll tracking
+  const scrollFired = { 25: false, 50: false, 75: false, 90: false };
+  window.addEventListener('scroll', () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = Math.round((window.scrollY / docH) * 100);
+
+    // progress bar
+    document.getElementById('scroll-progress').style.width = pct + '%';
+
+    // milestones
+    [25, 50, 75, 90].forEach(m => {
+      if (pct >= m && !scrollFired[m]) {
+        scrollFired[m] = true;
+        fireEvent('scroll_depth', { scroll_depth_percentage: m, page_path: window.location.pathname });
+        const el = document.getElementById('sd-' + m);
+        if (el) { el.style.borderColor = 'var(--accent)'; el.style.color = 'var(--accent)'; }
+      }
+    });
+  });
+
+  // ── Fire page_view on load
+  window.addEventListener('load', () => {
+    fireEvent('page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_referrer: document.referrer || 'direct'
+    });
+    // Engagement time ping every 30s
+    setInterval(() => {
+      fireEvent('user_engagement', { engagement_time_msec: 30000, session_engaged: true });
+    }, 30000);
+  });
+
+  // ── User_engagement on tab visibility
+  document.addEventListener('visibilitychange', () => {
+    fireEvent(document.hidden ? 'page_hide' : 'page_show', { visibility_state: document.visibilityState });
+  });
+</script>
+</body>
+</html>
