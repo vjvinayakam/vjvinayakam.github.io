@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Vijai Vinayakam — Digital Marketing &amp; Growth Consultant">
 <meta property="og:description" content="Turn your digital marketing into a growth engine. Paid advertising, SEO, conversion tracking and websites built for measurable results.">
-<meta property="og:image" content="og-image.jpg">
+<meta property="og:image" content="profile.png">
 <meta property="og:url" content="https://www.vijaivinayakam.com">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vijai Vinayakam — Digital Marketing &amp; Growth Consultant">
@@ -279,17 +279,18 @@
   .hero-panel::after{bottom:-1px; right:-1px; border-left:none; border-top:none;}
 
   .portrait-box{
-    aspect-ratio:4/3;
-    border:1px dashed var(--line-strong);
-    background:repeating-linear-gradient(135deg, var(--paper), var(--paper) 10px, #EEF0EE 10px, #EEF0EE 11px);
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    gap:8px;
-    color:var(--ink-faint);
-    font-family:var(--font-mono); font-size:12px; text-align:center;
+    aspect-ratio:4/5;
+    border:1px solid var(--line-strong);
+    overflow:hidden;
     margin-bottom:16px;
-    padding:12px;
+    background:var(--paper);
   }
-  .portrait-box svg{width:32px; height:32px; opacity:0.6;}
+  .portrait-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
 
   .metric-row{
     display:grid; grid-template-columns:1fr 1fr; gap:1px;
@@ -456,9 +457,14 @@
   .about-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:clamp(32px,5vw,64px); align-items:center;}
   .about-photo{
     aspect-ratio:4/5; border:1px solid var(--line-strong);
-    background:repeating-linear-gradient(135deg, var(--paper), var(--paper) 10px, #EEF0EE 10px, #EEF0EE 11px);
-    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;
-    color:var(--ink-faint); font-family:var(--font-mono); font-size:12px; text-align:center;
+    overflow:hidden;
+    background:var(--paper);
+  }
+  .about-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
   }
   .about-copy p{color:var(--ink-soft); margin-bottom:16px; max-width:60ch;}
   .about-tags{display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 28px;}
@@ -596,10 +602,7 @@
 
         <div class="hero-panel">
           <div class="portrait-box">
-  <img src="profile.jpg" alt="Vijai Vinayakam" style="width:100%; height:100%; object-fit:cover;">
-</div>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
-            Portrait Placeholder
+            <img src="profile.png" alt="Vijai Vinayakam">
           </div>
           <svg viewBox="0 0 300 70" width="100%" height="60" aria-hidden="true" style="margin-bottom:12px;">
             <polyline class="chart-line" points="0,60 40,50 80,54 120,30 160,35 200,15 240,20 300,5"/>
@@ -829,11 +832,8 @@
   <!-- ABOUT -->
   <section id="about">
     <div class="wrap about-grid">
-      <div class="about-photo reveal" style="padding:0; overflow:hidden;">
-      <img src="profile.jpg" alt="Vijai Vinayakam" style="width:100%; height:100%; object-fit:cover;">
-       </div>
-        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
-        Headshot Placeholder
+      <div class="about-photo reveal">
+        <img src="profile.png" alt="Vijai Vinayakam">
       </div>
       <div class="about-copy reveal">
         <p class="eyebrow">About Me</p>
