@@ -1,1006 +1,963 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vijai Vinayakam — Web Tracking Specialist</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<title>Vijai Vinayakam — Digital Marketing &amp; Growth Consultant</title>
+<meta name="description" content="Vijai Vinayakam helps small businesses, e-commerce brands, SaaS companies and startups grow through paid advertising, SEO, conversion tracking and high-performing websites.">
+<meta name="keywords" content="digital marketing consultant, growth consultant, Google Ads, Meta Ads, SEO, GA4, conversion tracking, Shopify website">
+<meta name="author" content="Vijai Vinayakam">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vijai Vinayakam — Digital Marketing &amp; Growth Consultant">
+<meta property="og:description" content="Turn your digital marketing into a growth engine. Paid advertising, SEO, conversion tracking and websites built for measurable results.">
+<meta property="og:image" content="og-image.jpg">
+<meta property="og:url" content="https://www.vijaivinayakam.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Vijai Vinayakam — Digital Marketing &amp; Growth Consultant">
+<meta name="twitter:description" content="Paid advertising, SEO, conversion tracking and websites built for measurable growth.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Vijai Vinayakam Digital Marketing",
+  "description": "Digital marketing and growth consulting: paid advertising, SEO, local SEO, conversion tracking and website development.",
+  "url": "https://www.vijaivinayakam.com",
+  "areaServed": "Global",
+  "priceRange": "$$",
+  "sameAs": ["https://www.linkedin.com/in/vijaivinayakam"],
+  "makesOffer": [
+    {"@type":"Offer","itemOffered":{"@type":"Service","name":"Paid Advertising (Google & Meta Ads)"}},
+    {"@type":"Offer","itemOffered":{"@type":"Service","name":"SEO"}},
+    {"@type":"Offer","itemOffered":{"@type":"Service","name":"Local SEO & Google Business Profile"}},
+    {"@type":"Offer","itemOffered":{"@type":"Service","name":"Website & Landing Page Development"}},
+    {"@type":"Offer","itemOffered":{"@type":"Service","name":"Analytics & Conversion Tracking"}}
+  ]
+}
+</script>
+
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #111118;
-    --surface2: #18181f;
-    --accent: #e8ff47;
-    --accent2: #47d4ff;
-    --accent3: #ff6b47;
-    --text: #f0ede8;
-    --muted: #888892;
-    --border: rgba(255,255,255,0.07);
+  :root{
+    --paper:#F6F7F5;
+    --panel:#FFFFFF;
+    --ink:#12161A;
+    --ink-soft:#4B555D;
+    --ink-faint:#646E75;
+    --line:#DEE3E0;
+    --line-strong:#C7CDC9;
+    --signal:#2451FF;
+    --signal-dim:#EDF1FF;
+    --growth:#FF7A1A;
+    --growth-dim:#FFF1E6;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --max:1200px;
+    --gutter:clamp(20px, 4vw, 48px);
+    --radius:2px;
   }
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    line-height: 1.7;
-    overflow-x: hidden;
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top: 80px;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
   }
 
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
   }
+  body.menu-open { overflow: hidden; }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 48px;
-    background: rgba(10,10,15,0.85);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 15px;
-    letter-spacing: 0.08em;
-    color: var(--accent);
-    text-decoration: none;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--accent); }
-
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 48px;
-    padding-top: 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-grid-bg {
+  .skip-link {
     position: absolute;
-    inset: 0;
+    top: -40px;
+    left: 10px;
+    background: var(--signal);
+    color: #fff;
+    padding: 8px 16px;
+    z-index: 1000;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus { top: 10px; }
+
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button, input, textarea, select {font:inherit; color:inherit;}
+
+  :focus-visible{outline:2px solid var(--signal); outline-offset:3px;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding-left:var(--gutter); padding-right:var(--gutter);}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--signal);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:16px; height:1px;
+    background:var(--signal);
+    display:inline-block;
+  }
+
+  h1,h2,h3{font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+  h2{font-size:clamp(28px,3.6vw,42px); line-height:1.15;}
+  h3{font-size:19px; line-height:1.3;}
+
+  .btn{
+    font-family:var(--font-mono);
+    font-size:13px;
+    letter-spacing:0.02em;
+    padding:14px 24px;
+    border-radius:var(--radius);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+    border:1px solid var(--ink);
+  }
+  .btn-primary:hover{background:var(--signal); border-color:var(--signal); transform:translateY(-2px);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line-strong);
+  }
+  .btn-ghost:hover{border-color:var(--ink); background: rgba(0,0,0,0.02); transform:translateY(-2px);}
+  .btn-arrow{transition:transform .18s ease;}
+  .btn:hover .btn-arrow{transform:translateX(3px);}
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(246,247,245,0.92);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .2s ease;
+  }
+  header.site-nav.scrolled{box-shadow:0 2px 12px rgba(0,0,0,0.05);}
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    height:72px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:12px;
+    font-family:var(--font-display); font-weight:600; font-size:17px;
+  }
+  .logo-mark{
+    width:32px; height:32px;
+    border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:11px; font-weight:600;
+    position:relative;
+  }
+  .logo-mark::after{
+    content:"";
+    position:absolute; inset:-4px;
+    border:1px solid var(--line-strong);
+  }
+  .nav-links{
+    display:flex; align-items:center; gap:32px;
+    font-family:var(--font-mono); font-size:13px;
+  }
+  .nav-links a{position:relative; padding:4px 0; color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:var(--signal); transform:scaleX(0); transform-origin:left;
+    transition:transform .2s ease;
+  }
+  .nav-links a:hover::after{transform:scaleX(1);}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .menu-toggle{
+    display:none; background:none; border:1px solid var(--line-strong);
+    width:42px; height:42px; align-items:center; justify-content:center;
+    border-radius: var(--radius);
+  }
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after{
+    content:""; display:block; width:18px; height:2px; background:var(--ink);
+    position:relative; transition:transform .2s ease, opacity .2s ease;
+  }
+  .menu-toggle span::before{position:absolute; top:-6px;}
+  .menu-toggle span::after{position:absolute; top:6px;}
+  .menu-toggle.open span{background:transparent;}
+  .menu-toggle.open span::before{transform:translateY(6px) rotate(45deg);}
+  .menu-toggle.open span::after{transform:translateY(-6px) rotate(-45deg);}
+
+  .mobile-panel{
+    display:none;
+    position:fixed; inset:72px 0 0 0; z-index:99;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    padding:24px var(--gutter);
+    flex-direction:column; gap:0;
+    overflow-y:auto;
+  }
+  .mobile-panel.open{display:flex;}
+  .mobile-panel a{
+    font-family:var(--font-mono); font-size:18px;
+    padding:16px 0; border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  .mobile-panel .btn{margin-top:24px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:clamp(40px,7vw,80px) 0 clamp(48px,6vw,80px);
     background-image:
-      linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(232,255,71,0.08) 0%, transparent 70%);
-    top: 50%;
-    left: 40%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-right: 60px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(232,255,71,0.08);
-    border: 1px solid rgba(232,255,71,0.2);
-    border-radius: 2px;
-    padding: 6px 14px;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 32px;
-    width: fit-content;
-    animation: fadeSlideUp 0.8s ease both;
-  }
-
-  .hero-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
-
-  .hero-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(52px, 6vw, 86px);
-    line-height: 1.0;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-    animation: fadeSlideUp 0.8s 0.1s ease both;
-  }
-
-  .hero-name em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .hero-role {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 28px;
-    animation: fadeSlideUp 0.8s 0.2s ease both;
-  }
-
-  .hero-desc {
-    font-size: 13px;
-    color: #aaa8b8;
-    max-width: 460px;
-    line-height: 1.9;
-    margin-bottom: 40px;
-    animation: fadeSlideUp 0.8s 0.3s ease both;
-  }
-
-  .hero-cta {
-    display: flex;
-    gap: 16px;
-    animation: fadeSlideUp 0.8s 0.4s ease both;
-  }
-
-  .btn-primary {
-    background: var(--accent);
-    color: #0a0a0f;
-    padding: 14px 28px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(232,255,71,0.3);
-  }
-
-  .btn-secondary {
-    border: 1px solid var(--border);
-    color: var(--muted);
-    padding: 14px 28px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: border-color 0.2s, color 0.2s;
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  .hero-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    animation: fadeSlideUp 0.8s 0.5s ease both;
-  }
-
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2px;
-    margin-bottom: 24px;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 28px 24px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s;
-  }
-
-  .stat-card:hover { border-color: rgba(232,255,71,0.3); }
-
-  .stat-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0;
-    width: 100%; height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s ease;
-  }
-
-  .stat-card:hover::after { transform: scaleX(1); }
-
-  .stat-number {
-    font-family: 'DM Serif Display', serif;
-    font-size: 42px;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 6px;
-  }
-
-  .stat-label {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .contact-bar {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 20px 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .contact-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .contact-item .icon {
-    width: 28px; height: 28px;
-    background: rgba(232,255,71,0.08);
-    border: 1px solid rgba(232,255,71,0.15);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px;
-    flex-shrink: 0;
-  }
-
-  /* SECTION COMMONS */
-  section {
-    padding: 100px 48px;
-    position: relative;
-  }
-
-  .section-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .section-label::before {
-    content: '';
-    width: 32px; height: 1px;
-    background: var(--accent);
-  }
-
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(36px, 4vw, 52px);
-    line-height: 1.1;
-    margin-bottom: 60px;
-  }
-
-  /* SKILLS SECTION */
-  .skills-section {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-  }
-
-  .skill-group {
-    background: var(--bg);
-    padding: 36px 32px;
-    border: 1px solid var(--border);
-    transition: border-color 0.3s, transform 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .skill-group:hover {
-    border-color: rgba(71,212,255,0.4);
-    transform: translateY(-4px);
-  }
-
-  .skill-group-icon {
-    font-size: 28px;
-    margin-bottom: 16px;
-  }
-
-  .skill-group-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent2);
-    margin-bottom: 20px;
-  }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .skill-tag {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    padding: 5px 12px;
-    font-size: 11px;
-    color: #aaa;
-    letter-spacing: 0.05em;
-    transition: all 0.2s;
-  }
-
-  .skill-tag:hover {
-    background: rgba(71,212,255,0.08);
-    border-color: rgba(71,212,255,0.3);
-    color: var(--accent2);
-  }
-
-  /* EXPERIENCE */
-  .experience-section { background: var(--bg); }
-
-  .exp-timeline {
-    position: relative;
-    padding-left: 32px;
-  }
-
-  .exp-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 8px; bottom: 0;
-    width: 1px;
-    background: linear-gradient(to bottom, var(--accent), transparent);
-  }
-
-  .exp-item {
-    position: relative;
-    margin-bottom: 64px;
-    animation: fadeSlideUp 0.6s ease both;
-  }
-
-  .exp-item::before {
-    content: '';
-    position: absolute;
-    left: -36px; top: 8px;
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 12px rgba(232,255,71,0.5);
-  }
-
-  .exp-meta {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 8px;
-    flex-wrap: wrap;
-  }
-
-  .exp-date {
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    color: var(--accent);
-    background: rgba(232,255,71,0.08);
-    border: 1px solid rgba(232,255,71,0.15);
-    padding: 3px 10px;
-  }
-
-  .exp-location {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .exp-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 26px;
-    margin-bottom: 4px;
-  }
-
-  .exp-company {
-    font-size: 13px;
-    color: var(--accent2);
-    letter-spacing: 0.08em;
-    margin-bottom: 20px;
-  }
-
-  .exp-bullets {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .exp-bullets li {
-    font-size: 13px;
-    color: #aaa8b8;
-    padding-left: 20px;
-    position: relative;
-    line-height: 1.8;
-  }
-
-  .exp-bullets li::before {
-    content: '→';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-size: 12px;
-  }
-
-  /* ACHIEVEMENTS */
-  .achievements-section {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-  }
-
-  .achieve-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-  }
-
-  .achieve-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 32px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .achieve-card:hover {
-    border-color: rgba(255,107,71,0.4);
-    transform: translateY(-4px);
-  }
-
-  .achieve-card::before {
-    content: attr(data-num);
-    position: absolute;
-    top: -10px; right: 16px;
-    font-family: 'DM Serif Display', serif;
-    font-size: 80px;
-    color: rgba(255,255,255,0.02);
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .achieve-icon { font-size: 32px; margin-bottom: 16px; }
-
-  .achieve-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 10px;
-  }
-
-  .achieve-desc {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  /* EDUCATION */
-  .education-section { background: var(--bg); }
-
-  .edu-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-
-  .edu-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 36px;
-    position: relative;
-    transition: border-color 0.3s;
-  }
-
-  .edu-card:hover { border-color: rgba(232,255,71,0.3); }
-
-  .edu-degree {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    margin-bottom: 8px;
-  }
-
-  .edu-school {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .edu-location {
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* CONTACT SECTION */
-  .contact-section {
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 100px 48px;
-  }
-
-  .contact-section .section-label { justify-content: center; }
-  .contact-section .section-label::before { display: none; }
-
-  .contact-email {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(28px, 4vw, 48px);
-    color: var(--accent);
-    margin: 24px 0 40px;
-    display: block;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .contact-email:hover { opacity: 0.7; }
-
-  .contact-info-row {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-
-  .contact-info-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  .contact-info-item span { color: var(--text); }
-
-  /* FOOTER */
-  footer {
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    padding: 24px 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  footer strong { color: var(--accent); }
-
-  /* ANIMATIONS */
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: rgba(232,255,71,0.3); }
-
-  /* MARQUEE */
-  .marquee-strip {
-    background: var(--accent);
-    padding: 12px 0;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-
-  .marquee-inner {
-    display: inline-flex;
-    animation: marquee 30s linear infinite;
-    gap: 0;
-  }
-
-  .marquee-item {
-    font-family: 'Syne', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #0a0a0f;
-    padding: 0 32px;
-  }
-
-  .marquee-dot {
-    color: rgba(0,0,0,0.3);
-    padding: 0 4px;
-  }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  @media (max-width: 900px) {
-    nav { padding: 16px 24px; }
-    .hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
-    .hero-right { margin-top: 40px; }
-    section { padding: 60px 24px; }
-    .skills-grid, .achieve-grid, .edu-grid { grid-template-columns: 1fr; }
-    .stats-grid { grid-template-columns: 1fr 1fr; }
-    footer { flex-direction: column; gap: 8px; text-align: center; }
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-position:center top;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:clamp(32px,5vw,64px);
+    align-items:center;
+  }
+  .hero-copy h1{
+    font-size:clamp(36px,4.8vw,60px);
+    line-height:1.08;
+    margin:16px 0 20px;
+  }
+  .hero-copy h1 .accent{color:var(--signal);}
+  .hero-copy p.lead{
+    font-size:clamp(16px,1.4vw,18px);
+    color:var(--ink-soft);
+    max-width:48ch;
+    margin-bottom:32px;
+  }
+  .hero-cta-row{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:32px;}
+  .hero-tools{
+    font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.04em;
+    color:var(--ink-faint);
+    padding-top:16px; border-top:1px solid var(--line);
+  }
+
+  .hero-panel{
+    background:var(--panel);
+    border:1px solid var(--line-strong);
+    position:relative;
+    padding:20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  }
+  .hero-panel::before, .hero-panel::after{
+    content:""; position:absolute; width:12px; height:12px;
+    border:1px solid var(--ink); opacity:0.6;
+  }
+  .hero-panel::before{top:-1px; left:-1px; border-right:none; border-bottom:none;}
+  .hero-panel::after{bottom:-1px; right:-1px; border-left:none; border-top:none;}
+
+  .portrait-box{
+    aspect-ratio:4/3;
+    border:1px dashed var(--line-strong);
+    background:repeating-linear-gradient(135deg, var(--paper), var(--paper) 10px, #EEF0EE 10px, #EEF0EE 11px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:8px;
+    color:var(--ink-faint);
+    font-family:var(--font-mono); font-size:12px; text-align:center;
+    margin-bottom:16px;
+    padding:12px;
+  }
+  .portrait-box svg{width:32px; height:32px; opacity:0.6;}
+
+  .metric-row{
+    display:grid; grid-template-columns:1fr 1fr; gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .metric-cell{background:var(--panel); padding:12px 14px;}
+  .metric-cell .num{font-family:var(--font-mono); font-size:19px; font-weight:600; color:var(--ink);}
+  .metric-cell .lbl{font-family:var(--font-mono); font-size:10px; letter-spacing:0.05em; color:var(--ink-faint); text-transform:uppercase; margin-top:2px;}
+
+  .chart-line{
+    stroke:var(--signal); stroke-width:2; fill:none;
+    stroke-dasharray:400; stroke-dashoffset:400;
+    animation:draw 1.8s ease forwards 0.3s;
+  }
+  @keyframes draw{to{stroke-dashoffset:0;}}
+
+  /* ---------- TRUST STRIP ---------- */
+  .trust-strip{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+    background: var(--panel);
+  }
+  .trust-row{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px 28px;
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em;
+    color:var(--ink-soft);
+  }
+  .trust-row span{position:relative; padding-left:14px;}
+  .trust-row span::before{
+    content:""; position:absolute; left:0; top:50%; transform:translateY(-50%);
+    width:5px; height:5px; background:var(--signal);
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{padding:clamp(56px,8vw,100px) 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    margin-bottom:clamp(36px,4vw,56px);
+    flex-wrap:wrap;
+  }
+  .section-head h2{max-width:620px;}
+  .section-head .side-note{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--ink-faint); max-width:32ch;
+  }
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--panel);
+    padding:32px 26px;
+    display:flex; flex-direction:column; gap:14px;
+    transition:background .2s ease, transform .2s ease;
+    position:relative;
+  }
+  .service-card:hover{background:#FAFBF9;}
+  .service-index{font-family:var(--font-mono); font-size:12px; color:var(--signal); font-weight:600;}
+  .service-card p{color:var(--ink-soft); font-size:14px; flex-grow:1;}
+  .service-learn{
+    font-family:var(--font-mono); font-size:12px; font-weight:500;
+    display:inline-flex; align-items:center; gap:6px; color:var(--ink);
+    padding-top:12px; border-top:1px solid var(--line); margin-top:auto;
+  }
+  .service-learn svg{transition:transform .18s ease; width:12px; height:12px;}
+  .service-card:hover .service-learn svg{transform:translateX(4px);}
+
+  /* ---------- RESULTS ---------- */
+  .results-section{background:var(--ink); color:var(--paper);}
+  .results-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0;
+  }
+  .result-cell{
+    padding:32px 24px;
+    border-left:1px solid rgba(255,255,255,0.12);
+  }
+  .result-cell:first-child{border-left:none;}
+  .result-num{
+    font-family:var(--font-mono); font-weight:600;
+    font-size:clamp(32px,3.2vw,44px);
+    color:var(--paper);
+  }
+  .result-lbl{
+    font-size:13px; color:rgba(246,247,245,0.7);
+    margin-top:8px; max-width:20ch;
+    padding-top:16px; border-top:2px solid var(--signal);
+  }
+
+  /* ---------- CASE STUDIES ---------- */
+  .case-grid{display:flex; flex-direction:column; gap:24px;}
+  .case-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    display:grid; grid-template-columns:0.85fr 1.4fr;
+    gap:0;
+  }
+  .case-visual{
+    border-right:1px solid var(--line);
+    background:repeating-linear-gradient(135deg, var(--paper), var(--paper) 10px, #EEF0EE 10px, #EEF0EE 11px);
+    min-height:220px;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ink-faint); font-family:var(--font-mono); font-size:11.5px; text-align:center;
+    padding:24px;
+  }
+  .case-body{padding:32px;}
+  .case-tag{font-family:var(--font-mono); font-size:11px; color:var(--signal); letter-spacing:0.05em; text-transform:uppercase; font-weight:600;}
+  .case-body h3{margin:8px 0 16px;}
+  .case-block{margin-bottom:14px;}
+  .case-block .k{font-family:var(--font-mono); font-size:11px; letter-spacing:0.05em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:2px;}
+  .case-block .v{font-size:14px; color:var(--ink-soft);}
+  .case-services{display:flex; flex-wrap:wrap; gap:8px; margin-top:20px;}
+  .case-services span{
+    font-family:var(--font-mono); font-size:11px; border:1px solid var(--line-strong);
+    padding:4px 8px; color:var(--ink-soft); background:var(--paper);
+  }
+
+  /* ---------- WHY ---------- */
+  .why-section{
+    display:grid; grid-template-columns:0.85fr 1.15fr; gap:clamp(32px,5vw,72px);
+    align-items:start;
+  }
+  .why-list{display:flex; flex-direction:column;}
+  .why-item{
+    display:flex; gap:16px; padding:20px 0; border-top:1px solid var(--line);
+  }
+  .why-item:last-child{border-bottom:1px solid var(--line);}
+  .why-tick{
+    flex-shrink:0; width:22px; height:22px; border:1px solid var(--signal);
+    display:flex; align-items:center; justify-content:center; margin-top:2px;
+    color: var(--signal);
+  }
+  .why-tick svg{width:12px; height:12px;}
+  .why-item h3{font-size:16px; margin-bottom:4px;}
+  .why-item p{font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- PROCESS ---------- */
+  .process-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:20px; position:relative;
+  }
+  .process-step{
+    background:var(--panel); border:1px solid var(--line); padding:24px 20px;
+    position:relative;
+  }
+  .process-num{
+    font-family:var(--font-mono); font-size:13px; color:var(--signal); font-weight:600;
+    margin-bottom:16px; display:inline-block;
+  }
+  .process-step h3{margin-bottom:8px; font-size:17px;}
+  .process-step p{font-size:13.5px; color:var(--ink-soft);}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testi-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line);}
+  .testi-card{background:var(--panel); padding:32px 24px; display:flex; flex-direction:column; justify-content:space-between; min-height:240px;}
+  .testi-quote{font-family:var(--font-display); font-size:16.5px; line-height:1.45; color:var(--ink);}
+  .testi-quote::before{content:"“"; color:var(--signal);}
+  .testi-quote::after{content:"”"; color:var(--signal);}
+  .testi-attr{font-family:var(--font-mono); font-size:12px; color:var(--ink-faint); margin-top:20px; padding-top:16px; border-top:1px solid var(--line);}
+  .testi-attr .name{color:var(--ink); display:block; margin-bottom:2px; font-size:13px; font-weight:600;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid; grid-template-columns:0.8fr 1.2fr; gap:clamp(32px,5vw,64px); align-items:center;}
+  .about-photo{
+    aspect-ratio:4/5; border:1px solid var(--line-strong);
+    background:repeating-linear-gradient(135deg, var(--paper), var(--paper) 10px, #EEF0EE 10px, #EEF0EE 11px);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;
+    color:var(--ink-faint); font-family:var(--font-mono); font-size:12px; text-align:center;
+  }
+  .about-copy p{color:var(--ink-soft); margin-bottom:16px; max-width:60ch;}
+  .about-tags{display:flex; flex-wrap:wrap; gap:8px; margin:24px 0 28px;}
+  .about-tags span{
+    font-family:var(--font-mono); font-size:11px; border:1px solid var(--line-strong);
+    padding:5px 10px; color:var(--ink-soft); background:var(--panel);
+  }
+
+  /* ---------- CONTACT & FORM ---------- */
+  .contact-section{background:var(--ink); color:var(--paper); position:relative;}
+  .contact-grid{
+    display:grid; grid-template-columns: 0.9fr 1.1fr; gap:clamp(32px, 5vw, 64px);
+    align-items:start;
+  }
+  .contact-info h2{color:var(--paper);}
+  .contact-info p{color:rgba(246,247,245,0.7); font-size:16px; margin:16px 0 28px; max-width:44ch;}
+  .contact-details{
+    font-family:var(--font-mono); font-size:13px; color:rgba(246,247,245,0.8);
+    display:flex; flex-direction:column; gap:12px; margin-bottom:24px;
+  }
+  .contact-details a{text-decoration:underline; text-underline-offset:4px;}
+  
+  .contact-form{
+    background:var(--panel); color:var(--ink); padding:32px;
+    border:1px solid var(--line-strong); border-radius:var(--radius);
+  }
+  .form-group{margin-bottom:18px;}
+  .form-group label{
+    display:block; font-family:var(--font-mono); font-size:12px; letter-spacing:0.04em;
+    text-transform:uppercase; color:var(--ink); margin-bottom:6px; font-weight:500;
+  }
+  .form-group input, .form-group textarea, .form-group select{
+    width:100%; padding:12px; border:1px solid var(--line-strong);
+    background:var(--paper); border-radius:var(--radius); font-size:14px;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+    outline:none; border-color:var(--signal); background:#fff;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:40px 0 28px; background:var(--paper);}
+  .footer-grid{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:24px; margin-bottom:28px;}
+  .footer-nav{display:flex; gap:24px; font-family:var(--font-mono); font-size:13px; color:var(--ink-soft); flex-wrap:wrap;}
+  .footer-nav a:hover{color:var(--ink);}
+  .footer-social{display:flex; gap:20px; font-family:var(--font-mono); font-size:13px;}
+  .footer-social a{color:var(--ink-soft); border-bottom:1px solid transparent;}
+  .footer-social a:hover{color:var(--ink); border-color:var(--ink);}
+  .footer-bottom{
+    padding-top:20px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------- REVEAL ANIMATION ---------- */
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .nav-links, .nav-cta-desktop{display:none;}
+    .menu-toggle{display:flex;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-panel{max-width:480px;}
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .results-grid{grid-template-columns:repeat(2,1fr);}
+    .result-cell:nth-child(3){border-left:none;}
+    .case-card{grid-template-columns:1fr;}
+    .case-visual{border-right:none; border-bottom:1px solid var(--line); min-height:160px;}
+    .why-section{grid-template-columns:1fr;}
+    .process-grid{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr;}
+    .about-photo{max-width:320px;}
+    .contact-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .services-grid{grid-template-columns:1fr;}
+    .results-grid{grid-template-columns:1fr 1fr;}
+    .result-cell{border-left:none; border-top:1px solid rgba(255,255,255,0.12); padding:20px 16px;}
+    .result-cell:nth-child(1),.result-cell:nth-child(2){border-top:none;}
+    .process-grid{grid-template-columns:1fr;}
+    .trust-row{justify-content:flex-start;}
+    .footer-bottom{flex-direction:column; gap:6px;}
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">VV_</a>
-  <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#education">Education</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid-bg"></div>
-  <div class="hero-glow"></div>
+<header class="site-nav" id="siteNav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo" aria-label="Vijai Vinayakam Homepage">
+      <span class="logo-mark">VJ</span>
+      Vijai Vinayakam
+    </a>
+    <nav class="nav-links" aria-label="Primary Navigation">
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="#contact" class="btn btn-primary nav-cta-desktop">Let's Work Together <span class="btn-arrow">→</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="btn btn-primary">Let's Work Together</a>
+  </div>
+</header>
 
-  <div class="hero-left">
-    <div class="hero-tag">Available for opportunities</div>
-    <h1 class="hero-name">Vijai<br><em>Vinayakam</em></h1>
-    <p class="hero-role">Web Tracking Specialist &amp; Marketing Data Analyst</p>
-    <p class="hero-desc">
-      3+ years building end-to-end GA4 &amp; GTM measurement frameworks that actually work.
-      I turn messy user behaviour data into clean BigQuery pipelines, dashboards, and decisions that move the needle.
-    </p>
-    <div class="hero-cta">
-      <a href="#experience" class="btn-primary">View Experience</a>
-      <a href="#contact" class="btn-secondary">Get in Touch</a>
+<main id="main-content">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="wrap hero-inner">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Digital Marketing &amp; Growth Consultant</p>
+          <h1>Turn your digital marketing into a <span class="accent">growth engine.</span></h1>
+          <p class="lead">I help businesses generate more traffic, leads and revenue through paid advertising, SEO, conversion tracking and high-performing websites.</p>
+          <div class="hero-cta-row">
+            <a href="#contact" class="btn btn-primary">Let's Work Together <span class="btn-arrow">→</span></a>
+            <a href="#work" class="btn btn-ghost">View My Work</a>
+          </div>
+          <p class="hero-tools">GOOGLE ADS · META ADS · SEO · GA4 · GTM · SHOPIFY</p>
+        </div>
+
+        <div class="hero-panel">
+          <div class="portrait-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+            Portrait Placeholder
+          </div>
+          <svg viewBox="0 0 300 70" width="100%" height="60" aria-hidden="true" style="margin-bottom:12px;">
+            <polyline class="chart-line" points="0,60 40,50 80,54 120,30 160,35 200,15 240,20 300,5"/>
+          </svg>
+          <div class="metric-row">
+            <div class="metric-cell"><div class="num">4.6x</div><div class="lbl">Avg. ROAS</div></div>
+            <div class="metric-cell"><div class="num">+128%</div><div class="lbl">Organic traffic</div></div>
+            <div class="metric-cell"><div class="num">98%</div><div class="lbl">Tracking accuracy</div></div>
+            <div class="metric-cell"><div class="num">30d</div><div class="lbl">First results</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="wrap trust-row" aria-label="Core Competencies">
+      <span>Google Ads</span>
+      <span>Meta Ads</span>
+      <span>Google Analytics 4</span>
+      <span>Google Tag Manager</span>
+      <span>SEO Consulting</span>
+      <span>Shopify Optimization</span>
+      <span>Looker Studio</span>
     </div>
   </div>
 
-  <div class="hero-right">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-number">3+</div>
-        <div class="stat-label">Years in Analytics</div>
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>How I can help your business grow</h2>
+        <p class="side-note">Five connected disciplines — advertising, search, tracking and technology — used together for compound growth.</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-number">GA4</div>
-        <div class="stat-label">Deep Specialisation</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">BQ</div>
-        <div class="stat-label">BigQuery Expert</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-number">5+</div>
-        <div class="stat-label">Roles across 3 Countries</div>
-      </div>
-    </div>
-    <div class="contact-bar">
-      <div class="contact-item">
-        <div class="icon">✉</div>
-        vijay5310@gmail.com
-      </div>
-      <div class="contact-item">
-        <div class="icon">📱</div>
-        +91 9150257384
-      </div>
-      <div class="contact-item">
-        <div class="icon">📍</div>
-        Chennai, India
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- MARQUEE -->
-<div class="marquee-strip">
-  <div class="marquee-inner">
-    <span class="marquee-item">GA4</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Google Tag Manager</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">BigQuery</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">SQL</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Looker Studio</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Power BI</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Attribution</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">A/B Testing</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Conversion Tracking</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Meta Ads</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Google Ads</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">DataLayer</span><span class="marquee-dot">◆</span>
-    <!-- duplicate for seamless loop -->
-    <span class="marquee-item">GA4</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Google Tag Manager</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">BigQuery</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">SQL</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Looker Studio</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Power BI</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Attribution</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">A/B Testing</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Conversion Tracking</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Meta Ads</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">Google Ads</span><span class="marquee-dot">◆</span>
-    <span class="marquee-item">DataLayer</span><span class="marquee-dot">◆</span>
-  </div>
-</div>
-
-<!-- SKILLS -->
-<section id="skills" class="skills-section reveal">
-  <div class="section-label">Core Expertise</div>
-  <h2 class="section-title">Skills &amp; Toolset</h2>
-  <div class="skills-grid">
-    <div class="skill-group">
-      <div class="skill-group-icon">📡</div>
-      <div class="skill-group-title">Tracking &amp; Analytics</div>
-      <div class="skill-tags">
-        <span class="skill-tag">GA4 Event Modeling</span>
-        <span class="skill-tag">Custom Dimensions</span>
-        <span class="skill-tag">Ecommerce Tracking</span>
-        <span class="skill-tag">GTM Tags &amp; Triggers</span>
-        <span class="skill-tag">dataLayer</span>
-        <span class="skill-tag">Consent Mode</span>
-        <span class="skill-tag">Funnel Analysis</span>
-        <span class="skill-tag">Cohort Retention</span>
-        <span class="skill-tag">QA &amp; Auditing</span>
+      <div class="services-grid reveal">
+        <article class="service-card">
+          <span class="service-index">01</span>
+          <h3>Paid Advertising</h3>
+          <p>Performance-focused Google and Meta advertising designed to generate qualified leads and sales while improving return on ad spend.</p>
+          <a href="#contact" class="service-learn">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+        <article class="service-card">
+          <span class="service-index">02</span>
+          <h3>Search Engine Optimization</h3>
+          <p>Improve organic visibility and attract high-intent customers actively searching for your products or services.</p>
+          <a href="#contact" class="service-learn">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+        <article class="service-card">
+          <span class="service-index">03</span>
+          <h3>Local SEO &amp; GBP</h3>
+          <p>Help local customers discover your physical or service-area business directly through Google Search and Maps.</p>
+          <a href="#contact" class="service-learn">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+        <article class="service-card">
+          <span class="service-index">04</span>
+          <h3>Landing Page Dev</h3>
+          <p>Fast, modern and conversion-focused websites engineered to convert cold ad traffic into paying customers.</p>
+          <a href="#contact" class="service-learn">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
+        <article class="service-card">
+          <span class="service-index">05</span>
+          <h3>Analytics &amp; Tracking</h3>
+          <p>Accurate GA4, GTM and server-side tracking so you know exactly which channel drives actual enterprise value.</p>
+          <a href="#contact" class="service-learn">Get Started <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </article>
       </div>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-icon">🗄️</div>
-      <div class="skill-group-title">Data &amp; Reporting</div>
-      <div class="skill-tags">
-        <span class="skill-tag">SQL</span>
-        <span class="skill-tag">BigQuery</span>
-        <span class="skill-tag">GA4 Export</span>
-        <span class="skill-tag">Event-level Queries</span>
-        <span class="skill-tag">Looker Studio</span>
-        <span class="skill-tag">Power BI</span>
-        <span class="skill-tag">Excel</span>
-        <span class="skill-tag">Google Sheets</span>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="results-section">
+    <div class="wrap">
+      <div class="results-grid reveal">
+        <div class="result-cell">
+          <div class="result-num">6+ Yrs</div>
+          <div class="result-lbl">Digital marketing experience</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">100+</div>
+          <div class="result-lbl">Campaigns managed</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">3</div>
+          <div class="result-lbl">Core Channels — Google, Meta, SEO</div>
+        </div>
+        <div class="result-cell">
+          <div class="result-num">100%</div>
+          <div class="result-lbl">Data-backed decision making</div>
+        </div>
       </div>
     </div>
-    <div class="skill-group">
-      <div class="skill-group-icon">📈</div>
-      <div class="skill-group-title">Marketing Analytics</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Google Ads</span>
-        <span class="skill-tag">Meta Ads</span>
-        <span class="skill-tag">Conversion Tracking</span>
-        <span class="skill-tag">Attribution</span>
-        <span class="skill-tag">ROAS</span>
-        <span class="skill-tag">CPA</span>
-        <span class="skill-tag">CTR Analysis</span>
-        <span class="skill-tag">A/B Testing</span>
+  </section>
+
+  <!-- CASE STUDIES -->
+  <section id="work">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Selected Case Studies</h2>
+        <p class="side-note">A sample of recent engagements. Full data audits available during initial consultation calls.</p>
+      </div>
+
+      <div class="case-grid reveal">
+        <article class="case-card">
+          <div class="case-visual">Dashboard & Analytics Audit Screenshot</div>
+          <div class="case-body">
+            <span class="case-tag">E-commerce · Fashion Retail</span>
+            <h3>E-commerce Conversion Engine</h3>
+            <div class="case-block"><div class="k">Challenge</div><div class="v">High advertising spend with broken conversion tracking, leading to misallocated budget across campaigns.</div></div>
+            <div class="case-block"><div class="k">Solution</div><div class="v">Rebuilt GA4 and GTM tracking architecture from scratch and restructured ad accounts based on verified data.</div></div>
+            <div class="case-block"><div class="k">Impact</div><div class="v">+140% ROAS improvement within 60 days.</div></div>
+            <div class="case-services"><span>Google Ads</span><span>GA4</span><span>GTM</span></div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-visual">Funnel Optimization Screenshot</div>
+          <div class="case-body">
+            <span class="case-tag">SaaS · B2B Platform</span>
+            <h3>SaaS Lead Generation Optimization</h3>
+            <div class="case-block"><div class="k">Challenge</div><div class="v">High top-of-funnel traffic with low trial signups and lack of conversion drop-off insights.</div></div>
+            <div class="case-block"><div class="k">Solution</div><div class="v">Created dedicated high-converting landing pages and implemented event-level funnel tracking.</div></div>
+            <div class="case-block"><div class="k">Impact</div><div class="v">3.2x increase in qualified demo requests.</div></div>
+            <div class="case-services"><span>Landing Pages</span><span>Meta Ads</span><span>Analytics</span></div>
+          </div>
+        </article>
+
+        <article class="case-card">
+          <div class="case-visual">Google Maps Ranking Analytics</div>
+          <div class="case-body">
+            <span class="case-tag">Local Service Business</span>
+            <h3>Local Market Dominance</h3>
+            <div class="case-block"><div class="k">Challenge</div><div class="v">Strong regional reputation but low digital visibility on local search queries and map packs.</div></div>
+            <div class="case-block"><div class="k">Solution</div><div class="v">Optimized GBP profile, deployed localized landing pages, and established automated review collection.</div></div>
+            <div class="case-block"><div class="k">Impact</div><div class="v">Top 3 map pack ranking for 18 primary keywords.</div></div>
+            <div class="case-services"><span>Local SEO</span><span>GBP</span><span>Review Growth</span></div>
+          </div>
+        </article>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- EXPERIENCE -->
-<section id="experience" class="experience-section">
-  <div class="section-label">Career</div>
-  <h2 class="section-title">Work Experience</h2>
-
-  <div class="exp-timeline">
-
-    <div class="exp-item reveal">
-      <div class="exp-meta">
-        <span class="exp-date">Feb 2023 – Feb 2026</span>
-        <span class="exp-location">Remote · Hong Kong</span>
+  <!-- WHY -->
+  <section>
+    <div class="wrap why-section">
+      <div class="reveal">
+        <p class="eyebrow">Approach</p>
+        <h2 style="margin-top:16px;">Marketing decisions backed by verified data.</h2>
+        <p style="color:var(--ink-soft); margin-top:16px; max-width:44ch;">I combine marketing strategy, paid acquisition, analytics, and technical implementation — removing guesswork so every marketing dollar is accountable.</p>
       </div>
-      <h3 class="exp-title">Marketing Analyst</h3>
-      <div class="exp-company">Wati.io</div>
-      <ul class="exp-bullets">
-        <li>Designed and maintained end-to-end GA4 &amp; GTM tracking across page views, scrolls, CTAs, forms, signups, demos, and subscription funnels.</li>
-        <li>Authored detailed tracking specifications (events, parameters, dataLayer) and collaborated with developers to ensure accurate implementation and QA.</li>
-        <li>Built GA4 → BigQuery data models to analyze multi-session user journeys, funnels, and drop-offs, improving conversion insights for the product team.</li>
-        <li>Developed automated Looker Studio &amp; Power BI dashboards covering traffic, funnels, retention, LTV, and ROI for marketing and product stakeholders.</li>
-        <li>Integrated GA4, Google Ads, Meta Ads, and CRM data in BigQuery to support full-funnel attribution and performance analysis.</li>
-        <li>Ran A/B tests on landing pages and ad creatives, measuring uplift in CTR, conversion rate, and downstream engagement using SQL.</li>
-      </ul>
-    </div>
-
-    <div class="exp-item reveal">
-      <div class="exp-meta">
-        <span class="exp-date">May 2020 – Aug 2022</span>
-        <span class="exp-location">Paris, France</span>
+      <div class="why-list reveal">
+        <div class="why-item">
+          <span class="why-tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg></span>
+          <div><h3>Strategy First</h3><p>Every campaign starts with clear unit economics and positioning, not rushed ad execution.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="why-tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg></span>
+          <div><h3>Accurate Conversion Infrastructure</h3><p>If tracking is broken, optimization fails. Accurate measurement is established before scale.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="why-tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg></span>
+          <div><h3>Transparent Reporting</h3><p>Direct access to raw data and custom dashboards — no vanity metric fluff.</p></div>
+        </div>
+        <div class="why-item">
+          <span class="why-tick" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12l5 5 9-10"/></svg></span>
+          <div><h3>Bottom-Line Growth Focused</h3><p>Qualified leads, customer acquisition cost (CAC), and ROAS take precedence over impressions.</p></div>
+        </div>
       </div>
-      <h3 class="exp-title">E-Commerce Business Owner</h3>
-      <div class="exp-company">FOGWIPE.FR</div>
-      <ul class="exp-bullets">
-        <li>Founded and scaled an e-commerce business to over 2,000 sales and €25,000 in gross revenue.</li>
-        <li>Developed and updated product content strategies to drive sales and improve product visibility.</li>
-      </ul>
     </div>
+  </section>
 
-    <div class="exp-item reveal">
-      <div class="exp-meta">
-        <span class="exp-date">Jun 2018 – Mar 2020</span>
-        <span class="exp-location">Paris, France</span>
+  <!-- PROCESS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>How We Work Together</h2>
       </div>
-      <h3 class="exp-title">Paid Media Manager</h3>
-      <div class="exp-company">Socialyse @ Havas Media</div>
-      <ul class="exp-bullets">
-        <li>Launched and managed large-budget paid social campaigns including carousel ads, video ads, canvas formats, and more.</li>
-      </ul>
-    </div>
-
-    <div class="exp-item reveal">
-      <div class="exp-meta">
-        <span class="exp-date">Sep 2016 – Mar 2017</span>
-        <span class="exp-location">Paris, France</span>
+      <div class="process-grid reveal">
+        <div class="process-step">
+          <div class="process-num">01</div>
+          <h3>Discovery</h3>
+          <p>Deep dive into your business model, customer economics, and growth bottlenecks.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">02</div>
+          <h3>Technical Audit</h3>
+          <p>Complete audit of analytics, paid accounts, conversion funnels, and organic ranking.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">03</div>
+          <h3>Execution</h3>
+          <p>Deploy optimized landing pages, fix conversion tracking, and launch structured campaigns.</p>
+        </div>
+        <div class="process-step">
+          <div class="process-num">04</div>
+          <h3>Scale & Optimize</h3>
+          <p>Continuous testing and iterative optimization to lower acquisition costs and scale volume.</p>
+        </div>
       </div>
-      <h3 class="exp-title">Paid Media Intern</h3>
-      <div class="exp-company">Socialyse @ Havas Media</div>
     </div>
+  </section>
 
-    <div class="exp-item reveal">
-      <div class="exp-meta">
-        <span class="exp-date">Jan 2014 – Aug 2015</span>
-        <span class="exp-location">Chennai, India</span>
+  <!-- TESTIMONIALS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>What Clients Say</h2>
       </div>
-      <h3 class="exp-title">Junior Marketing Manager</h3>
-      <div class="exp-company">Sys Universe</div>
-      <ul class="exp-bullets">
-        <li>Managed social media campaigns with a focus on Instagram and Facebook growth and engagement.</li>
-      </ul>
+      <div class="testi-grid reveal">
+        <article class="testi-card">
+          <p class="testi-quote">Within two months our ad spend was finally tied to real revenue numbers instead of guesses. That change alone paid for the engagement.</p>
+          <div class="testi-attr"><span class="name">Sarah Whitfield</span>Founder, Coastal Home Goods</div>
+        </article>
+        <article class="testi-card">
+          <p class="testi-quote">Vijai rebuilt our tracking before touching a single campaign. It was the first time our reporting actually matched reality.</p>
+          <div class="testi-attr"><span class="name">Daniel Osei</span>Head of Growth, Fieldnote (SaaS)</div>
+        </article>
+        <article class="testi-card">
+          <p class="testi-quote">Our Google Business Profile went from an afterthought to our biggest source of new bookings in under three months.</p>
+          <div class="testi-attr"><span class="name">Priya Nandakumar</span>Owner, Nandakumar Dental Clinic</div>
+        </article>
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="about-photo reveal">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"/></svg>
+        Headshot Placeholder
+      </div>
+      <div class="about-copy reveal">
+        <p class="eyebrow">About Me</p>
+        <h2 style="margin-top:16px;">Marketing + Data + Technical Execution.</h2>
+        <p style="margin-top:18px;">My approach combines hands-on digital marketing strategy with full analytics implementation. I don't just write strategy or run ads — I ensure the technical tracking architecture reliably proves ROI.</p>
+        <p>This full-stack approach eliminates disconnects between lead generation and data verification.</p>
+        <div class="about-tags">
+          <span>Paid Media</span><span>SEO</span><span>GA4</span><span>Google Tag Manager</span>
+          <span>Marketing Analytics</span><span>Conversion Optimization</span><span>Web Dev</span>
+        </div>
+        <a href="#contact" class="btn btn-ghost">Get in Touch <span class="btn-arrow">→</span></a>
+      </div>
+    </div>
+  </section>
 
-<!-- ACHIEVEMENTS -->
-<section class="achievements-section reveal">
-  <div class="section-label">Highlights</div>
-  <h2 class="section-title">Key Achievements</h2>
-  <div class="achieve-grid">
-    <div class="achieve-card" data-num="01">
-      <div class="achieve-icon">🎯</div>
-      <div class="achieve-title">End-to-End Tracking Architecture</div>
-      <div class="achieve-desc">Built and owned complete GA4 &amp; GTM measurement frameworks at Wati.io covering the full subscription funnel from first touch to conversion.</div>
-    </div>
-    <div class="achieve-card" data-num="02">
-      <div class="achieve-icon">⚡</div>
-      <div class="achieve-title">BigQuery Data Modelling</div>
-      <div class="achieve-desc">Designed event-level BigQuery pipelines integrating GA4, Google Ads, Meta Ads, and CRM data for unified full-funnel attribution.</div>
-    </div>
-    <div class="achieve-card" data-num="03">
-      <div class="achieve-icon">🛒</div>
-      <div class="achieve-title">€25K E-Commerce Revenue</div>
-      <div class="achieve-desc">Built FOGWIPE.FR from the ground up, scaling to 2,000+ sales and €25,000 gross revenue through product content and paid media strategies.</div>
-    </div>
-  </div>
-</section>
+  <!-- CONTACT & FORM -->
+  <section class="contact-section" id="contact">
+    <div class="wrap">
+      <div class="contact-grid reveal">
+        <div class="contact-info">
+          <p class="eyebrow" style="color:var(--growth);">Let's Connect</p>
+          <h2 style="margin-top:16px;">Ready to turn digital marketing into your primary growth engine?</h2>
+          <p>Send a message detailing your current business targets or marketing hurdles. I'll review your setup and outline immediate growth levers.</p>
+          <div class="contact-details">
+            <div>Email: <a href="mailto:hello@vijaivinayakam.com">hello@vijaivinayakam.com</a></div>
+            <div>LinkedIn: <a href="https://www.linkedin.com/in/vijaivinayakam" target="_blank" rel="noopener">linkedin.com/in/vijaivinayakam</a></div>
+          </div>
+        </div>
 
-<!-- EDUCATION -->
-<section id="education" class="education-section reveal">
-  <div class="section-label">Education</div>
-  <h2 class="section-title">Academic Background</h2>
-  <div class="edu-grid">
-    <div class="edu-card">
-      <div class="edu-degree">MSc in Information Systems</div>
-      <div class="edu-school">ESIEE Paris</div>
-      <div class="edu-location">📍 Paris, France</div>
+        <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! Your message has been sent.');">
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Doe" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="jane@company.com" required>
+          </div>
+          <div class="form-group">
+            <label for="service">Primary Area of Interest</label>
+            <select id="service" name="service">
+              <option value="paid-ads">Paid Advertising (Google/Meta)</option>
+              <option value="seo">SEO & Content Strategy</option>
+              <option value="analytics">GA4 / Tracking Audit</option>
+              <option value="web-dev">Landing Page / Web Dev</option>
+              <option value="full-growth">Full-Funnel Marketing Consulting</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="message">How can I help?</label>
+            <textarea id="message" name="message" rows="4" placeholder="Tell me about your goals or current challenges..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;">Send Message <span class="btn-arrow">→</span></button>
+        </form>
+      </div>
     </div>
-    <div class="edu-card">
-      <div class="edu-degree">B.E. in Computer Science</div>
-      <div class="edu-school">Anna University</div>
-      <div class="edu-location">📍 Chennai, India</div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<!-- CONTACT -->
-<section id="contact" class="contact-section reveal">
-  <div class="section-label">Let's Connect</div>
-  <h2 class="section-title">Get in Touch</h2>
-  <a href="mailto:vijay5310@gmail.com" class="contact-email">vijay5310@gmail.com</a>
-  <div class="contact-info-row">
-    <div class="contact-info-item">📱 <span>+91 9150257384</span></div>
-    <div class="contact-info-item">📍 <span>Chennai, India</span></div>
-    <div class="contact-info-item">🌐 <span>Open to Remote</span></div>
-  </div>
-</section>
+</main>
 
-<!-- FOOTER -->
 <footer>
-  <span>© 2026 <strong>Vijai Vinayakam</strong></span>
-  <span>Web Tracking Specialist · Marketing Data Analyst</span>
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="#top" class="logo">
+        <span class="logo-mark">VJ</span>
+        Vijai Vinayakam
+      </a>
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/vijaivinayakam" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:hello@vijaivinayakam.com">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Digital Marketing · Paid Ads · SEO · Analytics · Landing Pages</span>
+      <span>&copy; <span id="year"></span> Vijai Vinayakam. All rights reserved.</span>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // Intersection Observer for reveal animations
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+  // Sticky nav shadow
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+
+  // Mobile menu toggle & accessible focus lock
+  const toggle = document.getElementById('menuToggle');
+  const panel = document.getElementById('mobilePanel');
+  
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    panel.setAttribute('aria-hidden', !isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+  });
+
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    panel.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-open');
+  }));
+
+  // Scroll reveal with IntersectionObserver
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
       }
     });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Dynamic Copyright Year
+  document.getElementById('year').textContent = new Date().getFullYear();
 </script>
+
 </body>
 </html>
