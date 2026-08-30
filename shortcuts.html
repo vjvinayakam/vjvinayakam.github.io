@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shortcuts &amp; Automations — Vijai Vinayakam</title>
+<meta name="description" content="iPhone Shortcuts, automations and small tech builds by Vijai Vinayakam — step-by-step explainers with screenshots.">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shortcuts & Automations — Vijai Vinayakam">
+<meta property="og:description" content="iPhone Shortcuts, automations and small tech builds — step-by-step explainers with screenshots.">
+<meta property="og:url" content="https://www.vijaivinayakam.com/shortcuts.html">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F6F7F5;
+    --panel:#FFFFFF;
+    --ink:#12161A;
+    --ink-soft:#4B555D;
+    --ink-faint:#646E75;
+    --line:#DEE3E0;
+    --line-strong:#C7CDC9;
+    --signal:#2451FF;
+    --signal-dim:#EDF1FF;
+    --growth:#FF7A1A;
+    --growth-dim:#FFF1E6;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --max:1200px;
+    --gutter:clamp(20px, 4vw, 48px);
+    --radius:2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top: 80px;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  body{
+    font-family:var(--font-body);
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.menu-open { overflow: hidden; }
+
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 10px;
+    background: var(--signal);
+    color: #fff;
+    padding: 8px 16px;
+    z-index: 1000;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus { top: 10px; }
+
+  img{max-width:100%; display:block;}
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  button, input, textarea, select {font:inherit; color:inherit;}
+
+  :focus-visible{outline:2px solid var(--signal); outline-offset:3px;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding-left:var(--gutter); padding-right:var(--gutter);}
+  .wrap-narrow{max-width:800px; margin:0 auto; padding-left:var(--gutter); padding-right:var(--gutter);}
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--signal);
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:16px; height:1px;
+    background:var(--signal);
+    display:inline-block;
+  }
+
+  h1,h2,h3,h4{font-family:var(--font-display); font-weight:600; letter-spacing:-0.01em; color:var(--ink);}
+  h1{font-size:clamp(36px,4.8vw,56px); line-height:1.08;}
+  h2{font-size:clamp(24px,2.6vw,32px); line-height:1.2;}
+  h3{font-size:19px; line-height:1.3;}
+  h4{font-size:15px; line-height:1.35;}
+
+  .btn{
+    font-family:var(--font-mono);
+    font-size:13px;
+    letter-spacing:0.02em;
+    padding:14px 24px;
+    border-radius:var(--radius);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    transition:transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease, border-color .18s ease;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .btn-primary{
+    background:var(--ink);
+    color:var(--paper);
+    border:1px solid var(--ink);
+  }
+  .btn-primary:hover{background:var(--signal); border-color:var(--signal); transform:translateY(-2px);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:1px solid var(--line-strong);
+  }
+  .btn-ghost:hover{border-color:var(--ink); background: rgba(0,0,0,0.02); transform:translateY(-2px);}
+  .btn-arrow{transition:transform .18s ease;}
+  .btn:hover .btn-arrow{transform:translateX(3px);}
+
+  /* ---------- NAV ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(246,247,245,0.92);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    transition:box-shadow .2s ease;
+  }
+  header.site-nav.scrolled{box-shadow:0 2px 12px rgba(0,0,0,0.05);}
+  .nav-inner{
+    display:flex; align-items:center; justify-content:space-between;
+    height:72px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:12px;
+    font-family:var(--font-display); font-weight:600; font-size:17px;
+  }
+  .logo-mark{
+    width:32px; height:32px;
+    border:1px solid var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:11px; font-weight:600;
+    position:relative;
+  }
+  .logo-mark::after{
+    content:"";
+    position:absolute; inset:-4px;
+    border:1px solid var(--line-strong);
+  }
+  .nav-links{
+    display:flex; align-items:center; gap:32px;
+    font-family:var(--font-mono); font-size:13px;
+  }
+  .nav-links a{position:relative; padding:4px 0; color:var(--ink-soft);}
+  .nav-links a:hover, .nav-links a.active{color:var(--ink);}
+  .nav-links a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:var(--signal); transform:scaleX(0); transform-origin:left;
+    transition:transform .2s ease;
+  }
+  .nav-links a:hover::after, .nav-links a.active::after{transform:scaleX(1);}
+  .nav-right{display:flex; align-items:center; gap:20px;}
+  .menu-toggle{
+    display:none; background:none; border:1px solid var(--line-strong);
+    width:42px; height:42px; align-items:center; justify-content:center;
+    border-radius: var(--radius);
+  }
+  .menu-toggle span, .menu-toggle span::before, .menu-toggle span::after{
+    content:""; display:block; width:18px; height:2px; background:var(--ink);
+    position:relative; transition:transform .2s ease, opacity .2s ease;
+  }
+  .menu-toggle span::before{position:absolute; top:-6px;}
+  .menu-toggle span::after{position:absolute; top:6px;}
+  .menu-toggle.open span{background:transparent;}
+  .menu-toggle.open span::before{transform:translateY(6px) rotate(45deg);}
+  .menu-toggle.open span::after{transform:translateY(-6px) rotate(-45deg);}
+
+  .mobile-panel{
+    display:none;
+    position:fixed; inset:72px 0 0 0; z-index:99;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    padding:24px var(--gutter);
+    flex-direction:column; gap:0;
+    overflow-y:auto;
+  }
+  .mobile-panel.open{display:flex;}
+  .mobile-panel a{
+    font-family:var(--font-mono); font-size:18px;
+    padding:16px 0; border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  .mobile-panel .btn{margin-top:24px;}
+
+  /* ---------- PAGE HERO ---------- */
+  .page-hero{
+    padding:clamp(40px,7vw,72px) 0 clamp(40px,5vw,56px);
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:48px 48px;
+    background-position:center top;
+    border-bottom: 1px solid var(--line);
+  }
+  .page-hero h1{margin:16px 0 14px;}
+  .page-hero p.lead{
+    font-size:16px; color:var(--ink-soft); max-width:60ch;
+  }
+  .breadcrumb{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);
+    margin-bottom:18px;
+  }
+  .breadcrumb a{color:var(--ink-soft); border-bottom:1px solid var(--line-strong);}
+  .breadcrumb a:hover{color:var(--signal); border-color:var(--signal);}
+  .hero-meta-row{
+    display:flex; flex-wrap:wrap; gap:10px; margin-top:24px;
+  }
+  .hero-meta-row span{
+    font-family:var(--font-mono); font-size:11px; border:1px solid var(--line-strong);
+    padding:5px 10px; color:var(--ink-soft); background:var(--panel);
+  }
+
+  section{padding:clamp(48px,7vw,88px) 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    margin-bottom:clamp(28px,4vw,44px); flex-wrap:wrap;
+  }
+  .section-head .side-note{font-family:var(--font-mono); font-size:12.5px; color:var(--ink-faint); max-width:32ch;}
+
+  /* ---------- ARTICLE ---------- */
+  .article-intro{padding-bottom:0;}
+  .article-intro p{color:var(--ink-soft); font-size:16px; margin-bottom:16px; max-width:70ch;}
+  .article-intro p:last-child{margin-bottom:0;}
+
+  .stat-row{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+    margin-top:32px;
+  }
+  .stat-cell{background:var(--panel); padding:18px 16px;}
+  .stat-cell .num{font-family:var(--font-mono); font-size:20px; font-weight:600; color:var(--ink);}
+  .stat-cell .lbl{font-family:var(--font-mono); font-size:10px; letter-spacing:0.05em; color:var(--ink-faint); text-transform:uppercase; margin-top:4px;}
+
+  /* ---------- STEP BLOCK ---------- */
+  .step-block{
+    display:grid; grid-template-columns:0.42fr 0.58fr; gap:0;
+    background:var(--panel); border:1px solid var(--line);
+    margin-bottom:24px;
+  }
+  .step-block:nth-child(even){grid-template-columns:0.58fr 0.42fr;}
+  .step-block:nth-child(even) .step-shot{order:2; border-right:none; border-left:1px solid var(--line);}
+  .step-shot{
+    border-right:1px solid var(--line);
+    background:#0d0f11;
+    display:flex; align-items:center; justify-content:center;
+    padding:28px;
+    min-height:280px;
+  }
+  .step-shot img{
+    max-height:520px; width:auto; margin:0 auto;
+    border:1px solid #232a30;
+  }
+  .step-copy{padding:32px 36px; display:flex; flex-direction:column; justify-content:center;}
+  .step-tag{
+    font-family:var(--font-mono); font-size:11px; color:var(--signal); letter-spacing:0.05em;
+    text-transform:uppercase; font-weight:600; margin-bottom:10px;
+  }
+  .step-copy h3{margin-bottom:10px;}
+  .step-copy p{color:var(--ink-soft); font-size:14.5px; margin-bottom:10px;}
+  .step-copy p:last-child{margin-bottom:0;}
+  .step-copy code{
+    font-family:var(--font-mono); font-size:13px; background:var(--paper);
+    border:1px solid var(--line-strong); padding:2px 6px; color:var(--ink);
+  }
+  .step-num-badge{
+    font-family:var(--font-mono); font-size:12px; color:var(--ink-faint);
+    margin-bottom:6px;
+  }
+
+  /* ---------- CALLOUT ---------- */
+  .callout{
+    background:var(--signal-dim); border:1px solid var(--signal);
+    padding:20px 24px; margin:8px 0 24px;
+    font-size:14px; color:var(--ink-soft);
+  }
+  .callout strong{color:var(--ink);}
+
+  /* ---------- FLOW SUMMARY ---------- */
+  .flow-summary{
+    background:var(--ink); color:var(--paper);
+    padding:36px;
+    display:flex; flex-wrap:wrap; align-items:center; gap:16px;
+    font-family:var(--font-mono); font-size:13px;
+  }
+  .flow-summary .flow-step{
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.14);
+    padding:10px 16px; white-space:nowrap;
+  }
+  .flow-summary .flow-arrow{color:var(--growth); font-size:16px;}
+
+  /* ---------- MORE SHORTCUTS GRID ---------- */
+  .more-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line);
+  }
+  .more-card{
+    background:var(--panel);
+    padding:32px 24px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .more-card.filled{transition:background .2s ease;}
+  .more-card.filled:hover{background:#FAFBF9;}
+  .more-index{font-family:var(--font-mono); font-size:12px; color:var(--signal); font-weight:600;}
+  .more-card p{color:var(--ink-soft); font-size:13.5px; flex-grow:1;}
+  .more-card .status{
+    font-family:var(--font-mono); font-size:11px; color:var(--ink-faint);
+    padding-top:12px; border-top:1px solid var(--line); margin-top:auto;
+  }
+  .more-card-empty{
+    background:var(--panel);
+    padding:40px 24px;
+    display:flex; flex-direction:column; align-items:flex-start; gap:10px;
+    color:var(--ink-faint);
+  }
+  .more-card-empty .plus{
+    width:28px; height:28px; border:1px solid var(--line-strong);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:16px; color:var(--ink-faint);
+  }
+  .more-card-empty p{font-family:var(--font-mono); font-size:12.5px; line-height:1.6;}
+
+  /* ---------- CTA ---------- */
+  .cta-section{background:var(--ink); color:var(--paper);}
+  .cta-inner{
+    display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;
+  }
+  .cta-inner h2{color:var(--paper); max-width:32ch;}
+  .cta-inner p{color:rgba(246,247,245,0.7); font-size:14px; margin-top:10px; max-width:40ch;}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:40px 0 28px; background:var(--paper);}
+  .footer-grid{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:24px; margin-bottom:28px;}
+  .footer-nav{display:flex; gap:24px; font-family:var(--font-mono); font-size:13px; color:var(--ink-soft); flex-wrap:wrap;}
+  .footer-nav a:hover{color:var(--ink);}
+  .footer-social{display:flex; gap:20px; font-family:var(--font-mono); font-size:13px;}
+  .footer-social a{color:var(--ink-soft); border-bottom:1px solid transparent;}
+  .footer-social a:hover{color:var(--ink); border-color:var(--ink);}
+  .footer-bottom{
+    padding-top:20px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  }
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0; transform:translateY(16px); transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:980px){
+    .nav-links, .nav-cta-desktop{display:none;}
+    .menu-toggle{display:flex;}
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .step-block, .step-block:nth-child(even){grid-template-columns:1fr;}
+    .step-block:nth-child(even) .step-shot{order:0; border-left:none; border-right:none; border-bottom:1px solid var(--line);}
+    .step-shot{border-right:none; border-bottom:1px solid var(--line); min-height:220px;}
+    .more-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:600px){
+    .stat-row{grid-template-columns:1fr 1fr;}
+    .step-copy{padding:24px 20px;}
+    .flow-summary{padding:24px 20px;}
+    .footer-bottom{flex-direction:column; gap:6px;}
+  }
+</style>
+</head>
+<body>
+
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="site-nav" id="siteNav">
+  <div class="wrap nav-inner">
+    <a href="index.html" class="logo" aria-label="Vijai Vinayakam Homepage">
+      <span class="logo-mark">VJ</span>
+      Vijai Vinayakam
+    </a>
+    <nav class="nav-links" aria-label="Primary Navigation">
+      <a href="index.html#services">Services</a>
+      <a href="index.html#work">Work</a>
+      <a href="videos.html">Videos</a>
+      <a href="shortcuts.html" class="active">Shortcuts</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a href="index.html#contact" class="btn btn-primary nav-cta-desktop">Let's Work Together <span class="btn-arrow">→</span></a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
+    <a href="index.html#services">Services</a>
+    <a href="index.html#work">Work</a>
+    <a href="videos.html">Videos</a>
+    <a href="shortcuts.html">Shortcuts</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="index.html#contact" class="btn btn-primary">Let's Work Together</a>
+  </div>
+</header>
+
+<main id="main-content">
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">Home</a> / Shortcuts</p>
+      <p class="eyebrow">iPhone Shortcuts &amp; Automations</p>
+      <h1>Shortcuts &amp; Automations</h1>
+      <p class="lead">Small tech builds I put together to automate the boring parts of running a business — starting with the iPhone Shortcuts I actually use every day. Step-by-step, screenshot by screenshot.</p>
+      <div class="hero-meta-row">
+        <span>iOS Shortcuts</span>
+        <span>Automations</span>
+        <span>No-Code</span>
+        <span>Personal Finance Tools</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED EXPLAINER: UPI AUTO-LOGGER -->
+  <section id="upi-auto-logger">
+    <div class="wrap">
+
+      <div class="section-head reveal">
+        <div>
+          <p class="eyebrow">Featured Shortcut · 01</p>
+          <h2 style="margin-top:12px;">The UPI Auto-Logger</h2>
+        </div>
+        <p class="side-note">Every debit SMS becomes a spreadsheet row automatically — no typing, no app switching.</p>
+      </div>
+
+      <div class="article-intro reveal">
+        <p>Every time I pay for something via UPI, my bank fires off a debit SMS. I used to manually copy the amount and balance into a spreadsheet to track spending — until I built this Shortcut to do it for me. The moment a debit message lands, it silently parses out the amount, date and running balance, then adds a new row to a "Transactions" table. No app to open, no typing.</p>
+        <p>Below is exactly how it's built, screenshot by screenshot, so you can recreate it for your own bank's SMS format.</p>
+
+        <div class="stat-row">
+          <div class="stat-cell"><div class="num">0</div><div class="lbl">Manual entry</div></div>
+          <div class="stat-cell"><div class="num">3</div><div class="lbl">Values extracted</div></div>
+          <div class="stat-cell"><div class="num">9</div><div class="lbl">Build steps</div></div>
+          <div class="stat-cell"><div class="num">100%</div><div class="lbl">On-device, private</div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STEP-BY-STEP -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+
+      <div class="section-head reveal">
+        <h2>How It's Built</h2>
+        <p class="side-note">Part 1 — setting up the trigger.</p>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/01-open-shortcuts.jpg" alt="The Shortcuts app in the App Store"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 01</div>
+          <div class="step-tag">Setup</div>
+          <h3>Open the Shortcuts app</h3>
+          <p>Shortcuts comes pre-installed on every iPhone. It's the engine behind every personal automation on iOS — no third-party app or subscription needed.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/02-automation-tab.jpg" alt="Library, Automation and Gallery tabs in Shortcuts"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 02</div>
+          <div class="step-tag">Setup</div>
+          <h3>Head to the Automation tab</h3>
+          <p>Shortcuts has three tabs: <code>Library</code> for your saved shortcuts, <code>Gallery</code> for templates, and <code>Automation</code> — where you build things that run themselves, triggered by an event rather than a tap.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/03-trigger-types.jpg" alt="List of personal automation trigger types"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 03</div>
+          <div class="step-tag">Trigger</div>
+          <h3>Choose "Message" as the trigger</h3>
+          <p>Personal Automations can fire on almost anything — time of day, arriving somewhere, an alarm stopping. For this build, the trigger is <code>Message</code>, since bank alerts arrive as SMS.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/04-message-trigger-intro.jpg" alt="When I Get a Message Containing setup screen"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 04</div>
+          <div class="step-tag">Trigger</div>
+          <h3>Start a new "When I Get a Message" automation</h3>
+          <p>This opens the configuration screen where you define exactly which messages should fire the automation — critical, since you don't want this running on every text you receive.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/05-when-screen-empty.jpg" alt="Sender set to Any Sender, Message Contains not yet set"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 05</div>
+          <div class="step-tag">Trigger</div>
+          <h3>Leave Sender as "Any Sender"</h3>
+          <p>Banks send SMS from all kinds of alphanumeric IDs (e.g. <code>AD-HDFCBK</code>) that change by region and carrier. Rather than chase every sender ID, this filters on message <em>content</em> instead — far more reliable.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/06-message-contains-text.jpg" alt="Message Contains text field with A/c XX2405 Debited with entered"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 06</div>
+          <div class="step-tag">Trigger</div>
+          <h3>Set "Message Contains" to the bank's fixed phrase</h3>
+          <p>Every debit SMS from my bank starts the same way: <code>A/c XX2405 Debited with</code>. That fixed substring is the filter — only messages containing this exact text will trigger the automation.</p>
+          <p><strong>To adapt this for your bank:</strong> open one of your own debit SMS messages and find the phrase that appears in every single one — usually right before the amount.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/07-when-screen-filled.jpg" alt="Completed trigger screen with Run After Confirmation checked"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 07</div>
+          <div class="step-tag">Trigger</div>
+          <h3>Keep "Run After Confirmation" on</h3>
+          <p>This shows a quick confirmation banner every time the automation is about to run, rather than acting silently. It's a good safety net while you're testing — you can switch to "Run Immediately" once you trust it.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PART 2: PARSING -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+
+      <div class="section-head reveal">
+        <h2>Part 2 — Parsing the Message</h2>
+        <p class="side-note">Turning raw SMS text into three clean variables.</p>
+      </div>
+
+      <div class="callout reveal">
+        A typical message looks like: <code>Dear Customer, A/c XX2405 Debited with ₹450.00 on 30-Aug-26. Avl Bal ₹12,340.50</code> — the actions below split this sentence apart to isolate just the numbers and date.
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/08-split-and-extract.jpg" alt="Split Shortcut Input by Spaces and Get Item at Index actions"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 08</div>
+          <div class="step-tag">Parsing</div>
+          <h3>Split the message by spaces, then pick out words by position</h3>
+          <p>The <code>Split Text</code> action breaks the whole SMS into a list of individual words. From there, <code>Get Item at Index</code> grabs specific words by their position in that list — index 5 for the amount, 7 for the date, 11 for the balance (the exact numbers depend on your bank's exact wording).</p>
+          <p>Each extracted value is stored with <code>Set Variable</code> so it can be reused in the final step.</p>
+        </div>
+      </div>
+
+      <div class="step-block reveal">
+        <div class="step-shot"><img src="assets/shortcuts/upi-auto-logger/09-set-vars-and-add-row.jpg" alt="Set variable Balance and Date, then Add row to Transactions table"></div>
+        <div class="step-copy">
+          <div class="step-num-badge">STEP 09</div>
+          <div class="step-tag">Logging</div>
+          <h3>Write the row to the spreadsheet</h3>
+          <p>With <code>Amount</code>, <code>Date</code> and <code>Balance</code> all captured as variables, the final action adds them as a new row to the <strong>top</strong> of the "Transactions" table inside the "Upi" sheet — so the most recent transaction is always at the top.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FLOW SUMMARY -->
+  <section style="padding-top:0;">
+    <div class="wrap">
+      <div class="flow-summary reveal">
+        <span class="flow-step">📩 Debit SMS arrives</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">✂️ Split by spaces</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">🔢 Extract Amount / Date / Balance</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">📊 Row added to Transactions</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MORE SHORTCUTS (placeholder grid for future entries) -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>More Shortcuts</h2>
+        <p class="side-note">New automations and tech breakdowns land here as they're built.</p>
+      </div>
+      <div class="more-grid reveal">
+        <div class="more-card-empty">
+          <span class="plus">+</span>
+          <p>Next shortcut<br>slots in here</p>
+        </div>
+        <div class="more-card-empty">
+          <span class="plus">+</span>
+          <p>Next shortcut<br>slots in here</p>
+        </div>
+        <div class="more-card-empty">
+          <span class="plus">+</span>
+          <p>Next shortcut<br>slots in here</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="wrap cta-inner reveal">
+      <div>
+        <h2>Want automations like this built for your business?</h2>
+        <p>Tracking, reporting, or repetitive admin work — if it happens the same way every time, it can probably be automated.</p>
+      </div>
+      <a href="index.html#contact" class="btn btn-primary">Let's Work Together <span class="btn-arrow">→</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">VJ</span>
+        Vijai Vinayakam
+      </a>
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#work">Work</a>
+        <a href="videos.html">Videos</a>
+        <a href="shortcuts.html">Shortcuts</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <div class="footer-social">
+        <a href="https://www.linkedin.com/in/vijaivinayakam" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:hello@vijaivinayakam.com">Email</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Digital Marketing · Paid Ads · SEO · Analytics · Landing Pages · Shortcuts</span>
+      <span>&copy; <span id="year"></span> Vijai Vinayakam. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+
+  const toggle = document.getElementById('menuToggle');
+  const panel = document.getElementById('mobilePanel');
+
+  toggle.addEventListener('click', () => {
+    const isOpen = panel.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+    toggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    panel.setAttribute('aria-hidden', !isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+  });
+
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    panel.classList.remove('open');
+    toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'Open menu');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('menu-open');
+  }));
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
